@@ -1,7 +1,7 @@
 package com.example.Namanba.user.controller;
 
 import com.example.Namanba.user.dto.LoginResultDto;
-import com.example.Namanba.user.service.kakao.KakaoLoginService;
+import com.example.Namanba.user.service.KakaoLoginService;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
