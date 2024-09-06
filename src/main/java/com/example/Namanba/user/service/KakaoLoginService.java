@@ -1,7 +1,6 @@
-package com.example.Namanba.user.service.kakao;
+package com.example.Namanba.user.service;
 
 import com.example.Namanba.common.enums.LoginType;
-import com.example.Namanba.common.util.JwtUtil;
 import com.example.Namanba.user.dto.LoginResultDto;
 import com.example.Namanba.user.dto.SocialUserProfileDto;
 import com.example.Namanba.user.entity.User;
