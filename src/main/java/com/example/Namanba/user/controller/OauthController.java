@@ -34,15 +34,16 @@ public class OauthController {
         LoginResultDto loginResult = kakaoLoginService.handleKakaoLogin(authCode);
         boolean isNewUser = loginResult.isNewUser();
 
-        Cookie authorization = new Cookie("Authorization", loginResult.getToken());
-        authorization.setSecure(false); // HTTPS 연결에서만 쿠키 전송 localhost에서는 허용됨
+        String token = loginResult.getToken();
+
+        Cookie authorization = new Cookie("Authorization", token);
+        authorization.setSecure(true); // HTTPS 연결에서만 쿠키 전송 localhost에서는 허용됨. 기존 false
         authorization.setHttpOnly(false); // JavaScript에서 접근 불가=백엔드에서만 접근 가능 -> false
         authorization.setPath("/"); // 전체 경로에 대해 쿠키 적용
         authorization.setMaxAge(3600); // 1시간 동안 유효
         response.addCookie(authorization);
 
-        // 로그인 성공 후 /hello 경로로 리디렉션
-        response.sendRedirect("/hello");
+        response.sendRedirect("https://main--namanbatest.netlify.app?token=" + token);
     }
 
     @GetMapping("/hello")
