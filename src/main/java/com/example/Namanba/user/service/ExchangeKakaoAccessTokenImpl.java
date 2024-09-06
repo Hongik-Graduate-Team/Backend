@@ -1,6 +1,5 @@
 package com.example.Namanba.user.service;
 
-import com.example.Namanba.common.exception.CustomException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Value;
@@ -35,7 +34,8 @@ public class ExchangeKakaoAccessTokenImpl implements ExchangeKakaoAccessToken{
         } catch (IOException e) {
             //log.error("카카오 액세스 토큰 교환 오류");
             System.err.println("카카오 액세스 토큰 교환 오류");
-            throw new CustomException(HttpStatus.INTERNAL_SERVER_ERROR, "카카오 로그인 실패");
+            //throw RuntimeException(HttpStatus.INTERNAL_SERVER_ERROR, "카카오 로그인 실패");
+            throw new RuntimeException(); // 예외 처리 추후 수정
         }
     }
 

@@ -1,6 +1,5 @@
 package com.example.Namanba.user.service;
 
-import com.example.Namanba.common.exception.CustomException;
 import com.example.Namanba.user.dto.SocialUserProfileDto;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -21,7 +20,8 @@ public class FetchKakaoUserProfileImpl implements FetchKakaoUserProfile{
         try {
             return fetchUserProfile(accessToken);
         } catch (Exception e) {
-            throw new CustomException(HttpStatus.INTERNAL_SERVER_ERROR, "카카오 사용자 프로필 오류");
+            //throw new CustomException(HttpStatus.INTERNAL_SERVER_ERROR, "카카오 사용자 프로필 오류");
+            throw new RuntimeException(); // 예외 처리 추후 수정
         }
     }
 
