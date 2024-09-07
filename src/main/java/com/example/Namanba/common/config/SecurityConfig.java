@@ -46,7 +46,9 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .cors(Customizer.withDefaults())
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers("/hello").permitAll()
+                        .requestMatchers("/hello",
+                                "/api/auth/kakao-login",
+                                "/login/oauth2/code/kakao").permitAll()
                         .anyRequest().authenticated() // 나머지 경로는 인증 필요
                 )
                 .addFilterBefore(new JwtAuthenticationFilter(jwtUtil, userRepository), UsernamePasswordAuthenticationFilter.class);
