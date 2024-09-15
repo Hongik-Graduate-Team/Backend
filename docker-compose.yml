@@ -1,0 +1,22 @@
+version: '3'
+services:
+
+  web:
+    container_name: web
+    image: yexxi/namanba-web
+    expose:
+      - "8080"
+    ports:
+      - "8080:8080"
+    environment:
+      - TZ=Asia/Seoul
+
+  nginx:
+    container_name: nginx
+    image: yexxi/namanba-nginx
+    ports:
+      - "80:80"
+    depends_on:
+      - web
+    environment:
+      - TZ=Asia/Seoul
