@@ -13,7 +13,7 @@ import org.springframework.web.client.RestTemplate;
 @Component
 public class FetchKakaoUserProfileImpl implements FetchKakaoUserProfile{
 
-    @Value("${spring.security.oauth2.client.provider.kakao.user-info-uri}")
+    @Value("${spring.security.oauth2.client.provider.kakao.token-uri}")
     private String endPoint;
 
     public SocialUserProfileDto doFetch(String accessToken) {

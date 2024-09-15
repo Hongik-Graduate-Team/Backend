@@ -24,8 +24,9 @@ public class ExchangeKakaoAccessTokenImpl implements ExchangeKakaoAccessToken{
     @Value("${spring.security.oauth2.client.registration.kakao.redirect-uri}")
     private String redirectURI;
 
-    @Value("${spring.security.oauth2.client.provider.kakao.token_uri}")
+    @Value("${spring.security.oauth2.client.provider.kakao.token-uri}")
     private String endPoint;
+
 
     @Override
     public String doExchange(String authorizationCode) {

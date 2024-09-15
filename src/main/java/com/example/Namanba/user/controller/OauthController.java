@@ -17,7 +17,7 @@ public class OauthController {
 
     private final KakaoLoginService kakaoLoginService;
 
-    @Value("${KAKAO_LOGIN_URL}")
+    @Value("${spring.kakao.login-url:defaultLoginUrl}")
     private String kakaoLoginUri;
 
     // 프론트에서 카카오 로그인 페이지로 이동시키는 uri
