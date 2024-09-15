@@ -31,6 +31,20 @@ jobs:
           cat ./application.yml
         shell: bash
 
+      ## create env.properties file
+      - name: Create env.properties file
+        run: |
+          mkdir -p ./src/main/resources
+          echo "DB_URL=${{ secrets.DB_URL }}" >> ./src/main/resources/env.properties
+          echo "DB_USERNAME=${{ secrets.DB_USERNAME }}" >> ./src/main/resources/env.properties
+          echo "DB_PASSWORD=${{ secrets.DB_PASSWORD }}" >> ./src/main/resources/env.properties
+          echo "KAKAO_CLIENT_ID=${{ secrets.KAKAO_CLIENT_ID }}" >> ./src/main/resources/env.properties
+          echo "KAKAO_CLIENT_SECRET=${{ secrets.KAKAO_CLIENT_SECRET }}" >> ./src/main/resources/env.properties
+          echo "KAKAO_REDIRECT_URI=${{ secrets.KAKAO_REDIRECT_URI }}" >> ./src/main/resources/env.properties
+          echo "KAKAO_LOGIN_URL=${{ secrets.KAKAO_LOGIN_URL }}" >> ./src/main/resources/env.properties
+          echo "JWT_SECRET_KEY=${{ secrets.JWT_SECRET_KEY }}" >> ./src/main/resources/env.properties
+        shell: bash
+
       ## gradle build
       - name: Build with Gradle
         run: |
@@ -62,7 +76,6 @@ jobs:
           remote_host: ${{ secrets.HOST }}
           remote_user: ubuntu
           remote_key: ${{ secrets.KEY }}
-
 
       ## docker compose up
       - name: executing remote ssh commands using password
