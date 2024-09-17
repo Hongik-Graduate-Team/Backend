@@ -14,37 +14,36 @@ import java.time.LocalDate;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class LanguageCerts {
+public class LanguageCert {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "languagecert_id")
-    private Long languageCertsId;
+    private Long languageCertId;
 
     @Column(name = "type")
-    private String languageCertsType;
+    private String languageCertType;
 
     @Column(name = "level")
-    private String languageCertsLevel;
+    private String languageCertLevel;
 
     @Column(name = "date")
-    private LocalDate languageCertsDate;
+    private LocalDate languageCertDate;
 
     @ManyToOne
     @JoinColumn(name = "portfolio_id")
     private Portfolio portfolio;
 
-    public void updateLanguageCertsType(String languageCertsType) {
-        this.languageCertsType = languageCertsType;
+    public void updateLanguageCertsType(String languageCertType) {
+        this.languageCertType = languageCertType;
     }
 
-    public void updateLanguageCertsLevel(String languageCertsLevel) {
-        this.languageCertsLevel = languageCertsLevel;
+    public void updateLanguageCertsLevel(String languageCertLevel) {
+        this.languageCertLevel = languageCertLevel;
     }
 
-    public void updateLanguageCertsDate(LocalDate languageCertsDate) {
-        this.languageCertsDate = languageCertsDate;
+    public void updateLanguageCertsDate(LocalDate languageCertDate) {
+        this.languageCertDate = languageCertDate;
     }
 
 }
-

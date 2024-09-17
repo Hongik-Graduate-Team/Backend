@@ -20,7 +20,7 @@ public class PortfolioService {
     private final CareerService careerService;
     private final CertificationService certificationService;
     private final GPAService gpaService;
-    private final LanguageCertsService languageCertsService;
+    private final LanguageCertService languageCertsService;
     private final MajorService majorService;
     private final ResumeService resumeService;
     private final StackService stackService;
@@ -39,7 +39,7 @@ public class PortfolioService {
         List<CareerDto> careerDtos = careerService.getCareers(portfolio);
         List<CertificationDto> certificationDtos = certificationService.getCertifications(portfolio);
         List<GPADto> gpaDtos = gpaService.getGPAs(portfolio);
-        List<LanguageCertsDto> languageCertsDtos = languageCertsService.getLanguageCerts(portfolio);
+        List<LanguageCertDto> languageCertsDtos = languageCertsService.getLanguageCerts(portfolio);
         List<MajorDto> majorDtos = majorService.getMajors(portfolio);
         List<ResumeDto> resumeDtos = resumeService.getResumes(portfolio);
         List<StackDto> stackDtos = stackService.getStacks(portfolio);
@@ -63,7 +63,7 @@ public class PortfolioService {
                 .build();
         return portfolioRepository.save(portfolio);
     }
-    
+
 
     public void updatePositions(Portfolio portfolio, String positionName) {
         Position position = positionRepository.findByPositionName(positionName);
