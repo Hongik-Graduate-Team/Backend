@@ -53,18 +53,7 @@ public class SecurityConfig {
                         .requestMatchers(swaggerUrlPatterns).permitAll()
                         .requestMatchers("/hello",
                                 "/api/auth/kakao-login",
-                                "/login/oauth2/code/kakao",
-                                "/api/portfolio",
-                                "/api/portfolio/position",
-                                "/api/career",
-                                "/hello",
-                                "/api/certifications",
-                                "/api/majors",
-                                "/api/stacks",
-                                "/api/careers",
-                                "/api/language-certs",
-                                "/api/resumes",
-                                "/api/mypage/interview"
+                                "/login/oauth2/code/kakao"
                                 ).permitAll()
                         .anyRequest().authenticated() // 나머지 경로는 인증 필요
                 )
