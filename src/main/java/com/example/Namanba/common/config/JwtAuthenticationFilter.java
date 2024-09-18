@@ -94,7 +94,12 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 "/api/language-certs",
                 "/api/resumes",
                 "/api/mypage/interview",
-                "/.well-known/acme-challenge/**"
+                "/.well-known/acme-challenge/**",
+                "/v3/api-docs/**",
+                "/swagger-resources",
+                "/swagger-resources/**",
+                "/swagger-ui/**",
+                "/swagger-ui.html"
         );
 
         String path = request.getRequestURI();
