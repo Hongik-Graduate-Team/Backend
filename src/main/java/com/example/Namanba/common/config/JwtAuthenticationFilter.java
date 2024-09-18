@@ -16,7 +16,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
-import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
@@ -32,26 +31,40 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
                                     FilterChain filterChain) throws IOException, ServletException {
 
-        String token = resolveToken((HttpServletRequest) request);
+        // HTTP 헤더에서 Authorization 헤더 값 가져오기
+        String authorizationHeader = request.getHeader("Authorization");
+
+        // Authorization 헤더가 존재하지 않거나 Bearer로 시작하지 않는 경우 처리
+        if (authorizationHeader == null || !authorizationHeader.startsWith("Bearer ")) {
+            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "토큰 누락");
+            return;
+        }
+
+        // Bearer 토큰에서 실제 토큰 값만 분리
+        String token = authorizationHeader.substring(7); // "Bearer " 이후의 토큰 값 추출
 
         try {
+            // 토큰에서 사용자 정보를 추출하여 인증 객체 생성
             UserPrincipal userPrincipal = createPrincipalFromToken(token);
 
             UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
                     userPrincipal, null, List.of(new SimpleGrantedAuthority("USER")));
 
+            // 세부 정보를 설정하고 SecurityContext에 인증 정보 저장
             authenticationToken.setDetails(
                     new WebAuthenticationDetailsSource().buildDetails(request));
 
-            SecurityContextHolder.getContext().setAuthentication(authenticationToken); // 토큰 유효성 검사하고 인증 객체 생성
+            SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+
         } catch (ExpiredJwtException e) {
             response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "토큰 만료");
             return;
         } catch (Exception e) {
-            //logger.error(e.getMessage());
             response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "토큰 오류");
             return;
         }
+
+        // 요청 처리 체인 계속 실행
         filterChain.doFilter(request, response);
     }
 
@@ -62,41 +75,17 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         return UserPrincipal.builder(user);
     }
 
-    private String resolveToken(HttpServletRequest request){
-        String bearerToken = request.getHeader("Authorization");
-        if (StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer")){
-            return bearerToken.substring(7);
-        }
-        return null;
-    }
-
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) {
-        List<String> allowedPath = Arrays.asList(
-                "/hello",
+        List<String> allowedPaths = Arrays.asList(
                 "/api/auth/kakao-login",
                 "/login/oauth2/code/kakao",
-                //"/api/portfolio",
-                //"/api/portfolio/position",
-                //"/api/career",
-                //"/api/certifications",
-                //"/api/majors",
-                //"/api/stacks",
-                //"/api/careers",
-                //"/api/language-certs",
-                //"/api/resumes",
-                //"/api/mypage/interview",
-                "/.well-known/acme-challenge/**",
-                "/v3/api-docs/**",
-                "/swagger-resources",
-                "/swagger-resources/**",
-                "/swagger-ui/**",
-                "/swagger-ui.html"
+                "/hello"
         );
 
         String path = request.getRequestURI();
-
-        return allowedPath.stream().anyMatch(path::equals);
+        return allowedPaths.stream().anyMatch(path::equals);
     }
+
 
 }
