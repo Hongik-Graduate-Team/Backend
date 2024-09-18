@@ -55,6 +55,7 @@ public class SecurityConfig {
                                 "/api/auth/kakao-login",
                                 "/login/oauth2/code/kakao"
                                 ).permitAll()
+                        /*
                         .requestMatchers("/api/portfolio",
                                 "/api/portfolio/position/**",
                                 "/api/career",
@@ -67,7 +68,7 @@ public class SecurityConfig {
                                 "/api/mypage/interview",
                                 "/api/gpas",
                                 "/api/awards"
-                        ).authenticated()
+                        ).authenticated()*/
                         .anyRequest().authenticated() // 나머지 경로는 인증 필요
                 )
                 .addFilterBefore(new JwtAuthenticationFilter(jwtUtil, userRepository), UsernamePasswordAuthenticationFilter.class)
