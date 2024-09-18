@@ -12,7 +12,7 @@ public class PortfolioResponseDto {
     private List<CareerDto> careers;
     private List<CertificationDto> certifications;
     private List<GPADto> gpas;
-    private List<LanguageCertsDto> languageCerts;
+    private List<LanguageCertDto> languageCerts;
     private List<MajorDto> majors;
     private List<ResumeDto> resumes;
     private List<StackDto> stacks;
