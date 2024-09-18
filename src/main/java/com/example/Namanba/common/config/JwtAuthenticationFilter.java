@@ -12,6 +12,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
@@ -30,7 +31,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
                                     FilterChain filterChain) throws IOException, ServletException {
-
 
         String token = resolveToken((HttpServletRequest) request);
 
@@ -73,12 +73,12 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) {
         List<String> allowedPath = Arrays.asList(
+                "/hello",
                 "/api/auth/kakao-login",
                 "/login/oauth2/code/kakao",
                 //"/api/portfolio",
                 //"/api/portfolio/position",
                 //"/api/career",
-                //"/hello",
                 //"/api/certifications",
                 //"/api/majors",
                 //"/api/stacks",
@@ -98,4 +98,5 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         return allowedPath.stream().anyMatch(path::equals);
     }
+
 }
