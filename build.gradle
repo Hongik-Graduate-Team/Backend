@@ -23,6 +23,10 @@ repositories {
 	mavenCentral()
 }
 
+ext {
+	set('springCloudVersion', "2023.0.3")
+}
+
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-data-jdbc'
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
@@ -52,6 +56,18 @@ dependencies {
 	// Java EE
 	implementation 'javax.xml.bind:jaxb-api:2.3.1'
 	implementation 'org.glassfish.jaxb:jaxb-runtime:2.3.1'
+
+	//gpt
+	implementation 'io.github.flashvayne:chatgpt-spring-boot-starter:1.0.4'
+
+	// OpenFeign
+	implementation 'org.springframework.cloud:spring-cloud-starter-openfeign'
+}
+
+dependencyManagement {
+	imports {
+		mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+	}
 }
 
 tasks.named('test') {
