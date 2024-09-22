@@ -8,6 +8,7 @@ import com.example.Namanba.Interview.dto.InterviewDto;
 import com.example.Namanba.Interview.entity.BasicQuestion;
 import com.example.Namanba.Interview.entity.CustomQuestion;
 import com.example.Namanba.Interview.entity.Interview;
+import com.example.Namanba.Interview.repository.InterviewRepository;
 import com.example.Namanba.Interview.service.processor.GenerateCustomQuestionsProcessor;
 import com.example.Namanba.portfolio.adaptor.PortfolioAdaptor;
 import com.example.Namanba.portfolio.adaptor.PositionAdaptor;
@@ -32,6 +33,7 @@ public class InterviewService {
     private final BasicQuestionAdaptor basicQuestionAdaptor;
     private final InterviewAdaptor interviewAdaptor;
     private final GenerateCustomQuestionsProcessor generateCustomQuestionsProcessor;
+    private final InterviewRepository interviewRepository;
 
     public InterviewDto execute(String interviewTitle, User user) {
 
@@ -45,7 +47,8 @@ public class InterviewService {
     }
 
     public List<String> ShowcustomQuestions(Long interviewId){
-        CustomQuestion customQuestion = customQuestionAdaptor.findByInterviewId(interviewId);
+        Interview interview = interviewRepository.findByInterviewId(interviewId);
+        CustomQuestion customQuestion = customQuestionAdaptor.findByInterview(interview);
         List<String> questions = extractQuestions(customQuestion.getCustomQuestions());
         return questions;
     }
