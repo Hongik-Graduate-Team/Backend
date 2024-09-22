@@ -9,6 +9,8 @@ import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/interview")
@@ -21,6 +23,11 @@ public class InterviewController {
     public SuccessResponse<InterviewDto> getQuestions(@RequestParam String interviewTitle, HttpServletRequest httpRequest) {
         User user = jwtUtil.getUserByToken(httpRequest);
         return SuccessResponse.of(interviewService.execute(interviewTitle, user));
+    }
+
+    @GetMapping("/custom")
+    public SuccessResponse<List<String>> getCustoms(@RequestParam Long interviewId){
+        return SuccessResponse.of(interviewService.ShowcustomQuestions(interviewId));
     }
 
 }

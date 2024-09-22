@@ -12,9 +12,8 @@ import org.springframework.web.bind.annotation.RequestHeader;
         url = "https://api.openai.com/v1"
 )
 public interface GptApi {
-    @PostMapping("/chat/completions")
+    @PostMapping(value = "/chat/completions", consumes = "application/json")
     ChatResponse callChatGpt(
             @RequestHeader("Authorization") String authHeader,
-            @RequestHeader("Content-Type") String contentType,
             @RequestBody ChatRequest requestBody);
 }

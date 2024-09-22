@@ -22,16 +22,31 @@ public class GptProcessor {
     private String gptModel;
 
     private final GptApi gptApi;
-
-    public ChatResponse callChatGpt(PromptContent promptContent){
+    public ChatResponse callChatGpt(PromptContent promptContent) {
         ChatRequest requestBody = new ChatRequest(
                 gptModel,
                 List.of(
-                        new ChatRequest.Message("system",promptContent.getSystemMessage()),
+                        new ChatRequest.Message("system", promptContent.getSystemMessage()),
                         new ChatRequest.Message("user", promptContent.getUserMessage())
                 )
         );
 
-        return gptApi.callChatGpt("Bearer " + apiKey, "application/json", requestBody);
+        // API 호출
+        ChatResponse response = gptApi.callChatGpt("Bearer " + apiKey, requestBody);
+
+        // 응답 출력
+        if (response != null) {
+            ChatResponse.Choice.Message firstChoiceMessage = response.getFirstChoiceMessage(); // 수정된 부분
+            if (firstChoiceMessage != null) {
+                System.out.println("Role: " + firstChoiceMessage.getRole());
+                System.out.println("Content: " + firstChoiceMessage.getContent());
+            } else {
+                System.out.println("First choice message is null.");
+            }
+        } else {
+            System.out.println("Response is null.");
+        }
+
+        return response;
     }
 }
