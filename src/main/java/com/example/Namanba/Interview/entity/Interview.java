@@ -30,11 +30,11 @@ public class Interview extends BaseTimeEntity {
 
     private String basicInterview3;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "portfolio_id")
     private Portfolio portfolio;
 
