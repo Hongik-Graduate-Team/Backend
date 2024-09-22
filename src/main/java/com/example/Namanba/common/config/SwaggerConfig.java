@@ -1,6 +1,5 @@
 package com.example.Namanba.common.config;
 
-
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
@@ -15,18 +14,18 @@ public class SwaggerConfig {
     @Bean
     public OpenAPI openAPI() {
         Info info = new Info()
-                .version("1.0")
-                .title("namanba API")
-                .description("namanba API입니다.");
+                .version("2.0.0")
+                .title("HOOKING Spring Boot REST API")
+                .description("후킹 API 명세서입니다.");
 
         String jwt = "JWT";
-        SecurityRequirement securityRequirement = new SecurityRequirement().addList(jwt); //헤더에 토큰을 포함한다.
-        Components components = new Components().addSecuritySchemes(jwt, new SecurityScheme() // jwt bearer 스키마 사용
+        SecurityRequirement securityRequirement = new SecurityRequirement().addList(jwt);
+        Components components = new Components().addSecuritySchemes(jwt, new SecurityScheme()
                 .name(jwt)
                 .type(SecurityScheme.Type.HTTP)
                 .scheme("bearer")
-                .bearerFormat("JWT")
-        );
+                .bearerFormat("JWT"));
+
         return new OpenAPI()
                 .addServersItem(new Server().url("/"))
                 .info(info)
