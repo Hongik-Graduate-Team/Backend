@@ -30,8 +30,9 @@ public class InterviewConverter {
                 .build();
     }
 
-    public static InterviewDto toInterviewDto(Interview interview, String customQuestions){
+    public static InterviewDto toInterviewDto(Interview interview, List<String> customQuestions){
         return InterviewDto.builder()
+                .interviewId(interview.getInterviewId())
                 .interviewTitle(interview.getInterviewTitle())
                 .basicInterview1(interview.getBasicInterview1())
                 .basicInterview2(interview.getBasicInterview2())

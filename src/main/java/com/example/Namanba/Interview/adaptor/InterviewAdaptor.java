@@ -23,5 +23,4 @@ public class InterviewAdaptor {
         return interviewRepository.save(interview);
     }
 
-
 }

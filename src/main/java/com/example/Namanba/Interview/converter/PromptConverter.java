@@ -34,6 +34,7 @@ public class PromptConverter {
                 userMessage.append(resume.getQuestion()).append("\n");
                 userMessage.append("[Answer] ");
                 userMessage.append(resume.getAnswer()).append("\n");
+                userMessage.append("Generate 5 questions based on the above criteria. Respond in Korean and only provide questions without any additional explanation.");
             }
         }
 
