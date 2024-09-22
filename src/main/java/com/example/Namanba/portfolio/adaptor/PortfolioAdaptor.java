@@ -19,8 +19,7 @@ public class PortfolioAdaptor {
     }
 
     public Portfolio findByUser(User user) {
-        return portfolioRepository.findByUser(user)
-                .orElseThrow(() -> new BaseException(PortfolioErrorCode.PORTFOLIO_NOT_FOUND));
+        return portfolioRepository.findByUser(user);
     }
 
 
