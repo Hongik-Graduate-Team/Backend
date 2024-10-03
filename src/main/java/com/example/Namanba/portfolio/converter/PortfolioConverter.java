@@ -24,7 +24,7 @@ public class PortfolioConverter {
     private final StackService stackService;
 
     public PortfolioResponseDto toPortfolioResponse(Portfolio portfolio) {
-        String positionName = portfolio.getPosition().getPositionName();
+        String positionName = (portfolio.getPosition() != null) ? portfolio.getPosition().getPositionName() : "";
         List<AwardDto> awardDtos = awardService.getAwards(portfolio);
         List<CareerDto> careerDtos = careerService.getCareers(portfolio);
         List<CertificationDto> certificationDtos = certificationService.getCertifications(portfolio);
