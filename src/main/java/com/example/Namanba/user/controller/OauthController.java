@@ -27,7 +27,27 @@ public class OauthController {
     }
 
     // kakao로부터 인가코드를 전달받는 리다이렉트 uri
-    @GetMapping("/login/oauth2/code/kakao") //redirect uri
+//    @GetMapping("/login/oauth2/code/kakao") //redirect uri
+//    public void kakaoLogin(@RequestParam("code") String authCode, HttpServletResponse response)
+//            throws IOException {
+//
+//        LoginResultDto loginResult = kakaoLoginService.handleKakaoLogin(authCode);
+//        boolean isNewUser = loginResult.isNewUser();
+//
+//        String token = loginResult.getToken();
+//
+//        Cookie authorization = new Cookie("Authorization", token);
+//        authorization.setSecure(true); // HTTPS 연결에서만 쿠키 전송 localhost에서는 허용됨. 기존 false
+//        authorization.setHttpOnly(false); // JavaScript에서 접근 불가=백엔드에서만 접근 가능 -> false
+//        authorization.setPath("/"); // 전체 경로에 대해 쿠키 적용
+//        authorization.setMaxAge(3600); // 1시간 동안 유효
+//        response.addCookie(authorization);
+//
+//        response.sendRedirect("https://main--namanbatest.netlify.app?token=" + token);
+//    }
+
+    // Authorization 헤더에 토큰을 포함하여 전달하는 방식
+    @GetMapping("/login/oauth2/code/kakao") // redirect URI
     public void kakaoLogin(@RequestParam("code") String authCode, HttpServletResponse response)
             throws IOException {
 
@@ -36,15 +56,13 @@ public class OauthController {
 
         String token = loginResult.getToken();
 
-        Cookie authorization = new Cookie("Authorization", token);
-        authorization.setSecure(true); // HTTPS 연결에서만 쿠키 전송 localhost에서는 허용됨. 기존 false
-        authorization.setHttpOnly(false); // JavaScript에서 접근 불가=백엔드에서만 접근 가능 -> false
-        authorization.setPath("/"); // 전체 경로에 대해 쿠키 적용
-        authorization.setMaxAge(3600); // 1시간 동안 유효
-        response.addCookie(authorization);
+        // Authorization 헤더에 토큰 포함
+        response.setHeader("Authorization", "Bearer " + token);
 
-        response.sendRedirect("https://main--namanbatest.netlify.app?token=" + token);
+        // Redirect 처리 (토큰은 더 이상 URL에 포함시키지 않음)
+        response.sendRedirect("https://main--namanbatest.netlify.app");
     }
+
 
     @GetMapping("/hello")
     public String hello(){
