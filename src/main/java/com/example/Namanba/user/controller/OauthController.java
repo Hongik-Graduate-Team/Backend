@@ -50,20 +50,28 @@ public class OauthController {
 
     @GetMapping("/login/oauth2/code/kakao")
     public ResponseEntity<?> kakaoLogin(@RequestParam("code") String authCode) throws IOException {
-
         // Kakao 로그인 처리
         LoginResultDto loginResult = kakaoLoginService.handleKakaoLogin(authCode);
         String token = loginResult.getToken();
-        boolean isNewUser = loginResult.isNewUser();
 
         // HTTP 응답 헤더에 토큰 추가
         HttpHeaders headers = new HttpHeaders();
         headers.set("Authorization", "Bearer " + token); // Bearer 토큰으로 헤더에 포함
 
-        // 리다이렉트 없이 응답 처리
+        // 쿠키 생성
+        Cookie authorization = new Cookie("Authorization", token);
+        authorization.setSecure(true); // HTTPS 연결에서만 쿠키 전송
+        authorization.setHttpOnly(true); // JavaScript에서 접근 불가
+        authorization.setPath("/"); // 전체 경로에 대해 쿠키 적용
+        authorization.setMaxAge(3600); // 1시간 동안 유효
+        authorization.setDomain("namanbatest.netlify.app"); // 도메인 설정
+
+        // 쿠키를 응답에 추가
+        headers.add("Set-Cookie", authorization.toString());
+
         return ResponseEntity.ok()
                 .headers(headers)
-                .body("Login successful");
+                .body(null);
     }
 
 
