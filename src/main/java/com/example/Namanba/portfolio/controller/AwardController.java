@@ -24,7 +24,7 @@ public class AwardController {
 
 
     @PostMapping
-    public SuccessResponse<List<AwardDto>> createAward(@RequestBody List<AwardDto> awardDtos, HttpServletRequest httpRequest) {
+    public SuccessResponse<Void> createAward(@RequestBody List<AwardDto> awardDtos, HttpServletRequest httpRequest) {
         User user = jwtUtil.getUserByToken(httpRequest);
         Portfolio portfolio = portfolioRepository.findByUser(user);
         awardService.createAwards(portfolio,awardDtos);
@@ -32,7 +32,7 @@ public class AwardController {
     }
 
     @PutMapping
-    public SuccessResponse<AwardDto> updateAward(@RequestBody List<AwardDto> awardDtos, HttpServletRequest httpRequest) {
+    public SuccessResponse<Void> updateAward(@RequestBody List<AwardDto> awardDtos, HttpServletRequest httpRequest) {
         User user = jwtUtil.getUserByToken(httpRequest);
         Portfolio portfolio = portfolioRepository.findByUser(user);
         awardService.updateAwards(portfolio,awardDtos);

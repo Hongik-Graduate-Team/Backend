@@ -6,7 +6,7 @@ import lombok.Getter;
 import java.time.LocalDate;
 
 @Getter
-@Builder
+@Builder // 경력사항
 public class CareerDto {
     private Long careerId;
     private String careerType;

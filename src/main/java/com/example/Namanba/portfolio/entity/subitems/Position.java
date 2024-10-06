@@ -1,16 +1,14 @@
 package com.example.Namanba.portfolio.entity.subitems;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Entity
 @Getter
 @Builder
-@NoArgsConstructor
 @AllArgsConstructor
+@Table(name = "position")
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Position {
 
     @Id
@@ -20,6 +18,5 @@ public class Position {
 
     @Column(name = "name")
     private String positionName;
-
 
 }
