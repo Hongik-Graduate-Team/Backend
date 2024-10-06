@@ -24,9 +24,9 @@ public class PortfolioController {
     @GetMapping
     public SuccessResponse<PortfolioResponseDto> getPortfolio(HttpServletRequest httpRequest) {
         User user = jwtUtil.getUserByToken(httpRequest);
-        if (portfolioService.getPortfolio(user) == null) {
-            return SuccessResponse.empty();
-        }
+//        if (portfolioService.getPortfolio(user) == null) {
+//            return SuccessResponse.empty();
+//        }
         return SuccessResponse.of(portfolioService.getPortfolio(user));
     }
     @PutMapping("/position")

@@ -1,32 +1,23 @@
 package com.example.Namanba.portfolio.service;
 
-import com.example.Namanba.portfolio.dto.*;
+import com.example.Namanba.portfolio.adaptor.PositionAdaptor;
+import com.example.Namanba.portfolio.converter.PortfolioConverter;
+import com.example.Namanba.portfolio.dto.PortfolioResponseDto;
 import com.example.Namanba.portfolio.entity.Portfolio;
 import com.example.Namanba.portfolio.entity.subitems.Position;
 import com.example.Namanba.portfolio.repository.PortfolioRepository;
-import com.example.Namanba.portfolio.repository.PositionRepository;
 import com.example.Namanba.user.entity.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-
 @Service
 @RequiredArgsConstructor
 @Transactional
 public class PortfolioService {
-    private final AwardService awardService;
-    private final CareerService careerService;
-    private final CertificationService certificationService;
-    private final GPAService gpaService;
-    private final LanguageCertService languageCertsService;
-    private final MajorService majorService;
-    private final ResumeService resumeService;
-    private final StackService stackService;
-
     private final PortfolioRepository portfolioRepository;
-    private final PositionRepository positionRepository;
+    private final PositionAdaptor positionAdaptor;
+    private final PortfolioConverter portfolioConverter;
 
     public PortfolioResponseDto getPortfolio(User user) {
         Portfolio portfolio = portfolioRepository.findByUser(user);
@@ -34,26 +25,7 @@ public class PortfolioService {
         if (portfolio == null) {
             portfolio = createPortfolio(user);
         }
-
-        List<AwardDto> awardDtos = awardService.getAwards(portfolio);
-        List<CareerDto> careerDtos = careerService.getCareers(portfolio);
-        List<CertificationDto> certificationDtos = certificationService.getCertifications(portfolio);
-        List<GPADto> gpaDtos = gpaService.getGPAs(portfolio);
-        List<LanguageCertDto> languageCertsDtos = languageCertsService.getLanguageCerts(portfolio);
-        List<MajorDto> majorDtos = majorService.getMajors(portfolio);
-        List<ResumeDto> resumeDtos = resumeService.getResumes(portfolio);
-        List<StackDto> stackDtos = stackService.getStacks(portfolio);
-
-        return PortfolioResponseDto.builder()
-                .awards(awardDtos)
-                .careers(careerDtos)
-                .certifications(certificationDtos)
-                .gpas(gpaDtos)
-                .languageCerts(languageCertsDtos)
-                .majors(majorDtos)
-                .resumes(resumeDtos)
-                .stacks(stackDtos)
-                .build();
+        return portfolioConverter.toPortfolioResponse(portfolio);
     }
 
     public Portfolio createPortfolio(User user) {
@@ -66,7 +38,7 @@ public class PortfolioService {
 
 
     public void updatePositions(Portfolio portfolio, String positionName) {
-        Position position = positionRepository.findByPositionName(positionName);
+        Position position = positionAdaptor.findByPositionName(positionName);
         portfolio.updatePosition(position);
         portfolioRepository.save(portfolio);
     }
