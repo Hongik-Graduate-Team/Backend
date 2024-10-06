@@ -64,7 +64,7 @@ public class OauthController {
         authorization.setHttpOnly(true); // JavaScript에서 접근 불가
         authorization.setPath("/"); // 전체 경로에 대해 쿠키 적용
         authorization.setMaxAge(3600); // 1시간 동안 유효
-        authorization.setDomain("namanbatest.netlify.app"); // 도메인 설정
+        authorization.setDomain("main--namanbatest.netlify.app"); // 도메인 설정
 
         // 쿠키를 응답에 추가
         headers.add("Set-Cookie", authorization.toString());
