@@ -29,7 +29,8 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration config = new CorsConfiguration();
-        config.setAllowedOriginPatterns(Arrays.asList("http://localhost:3000", "http://localhost:8080","https://deploy-preview-15--namanbatest.netlify.app", "https://namanba.shop",
+        config.setAllowedOriginPatterns(Arrays.asList("http://localhost:8080", "http://localhost:3000", "https://deploy-preview-15--namanbatest.netlify.app", "https://namanba.shop",
+
                 "https://main--namanbatest.netlify.app/"));
         config.addAllowedMethod("*");
         config.addAllowedHeader("*");
@@ -51,7 +52,7 @@ public class SecurityConfig {
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // jwt 사용하기 때문에 세션 비사용
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers(swaggerUrlPatterns).permitAll()
-                        .requestMatchers("/hello",
+                        .requestMatchers("/hello", "/css/**","/images/**", "/js/**", "/h2/**",
                                 "/api/auth/kakao-login",
                                 "/login/oauth2/code/kakao"
                                 ).permitAll()
@@ -62,11 +63,32 @@ public class SecurityConfig {
     }
 
     private final String[] swaggerUrlPatterns = {
-            "/v3/api-docs/**",
-            "/swagger-resources",
-            "/swagger-resources/**",
+            "/swagger-ui/index.html",
+            "/swagger-ui/swagger-ui-standalone-preset.js",
+            "/swagger-ui/swagger-initializer.js",
+            "/swagger-ui/swagger-ui-bundle.js",
+            "/swagger-ui/swagger-ui.css",
+            "/swagger-ui/index.css",
+            "/swagger-ui/favicon-32x32.png",
+            "/swagger-ui/favicon-16x16.png",
+            "/api-docs/json/swagger-config",
+            "/api-docs/json",
+            "/h2-console/**",
+            "/favicon.ico",
+            "/error",
             "/swagger-ui/**",
-            "/swagger-ui.html",
+            "/swagger-resources/**",
+            "/v3/api-docs/**",
+            "/v3/api-docs/swagger-config",
+            "/v3/api-docs",
+            "/","/swagger-ui/**",
+            "/v2/**",
+            "/swagger-ui/**",
+            "/swagger-resources/**",
+            "/v3/**",
+            "/api-docs/**",
+            "/api-docs/json/swagger-config",
+            "/favicon.ico"
     };
 
 }
