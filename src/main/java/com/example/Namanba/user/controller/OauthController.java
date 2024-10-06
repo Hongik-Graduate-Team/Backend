@@ -67,7 +67,7 @@ public class OauthController {
         response.addCookie(authorization);
 
         // SameSite=None을 수동으로 헤더에 추가
-        response.setHeader("Set-Cookie", "Authorization=" + token + "; Path=/; Max-Age=3600; Domain=namanbatest.netlify.app; SameSite=None; Secure; HttpOnly");
+        response.setHeader("Set-Cookie", "Authorization=" + token + "; Path=/; Max-Age=3600; Domain=main--namanbatest.netlify.app; SameSite=None; Secure; HttpOnly");
 
         // 리다이렉트
         response.sendRedirect("https://main--namanbatest.netlify.app");
