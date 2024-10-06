@@ -46,8 +46,7 @@ public class OauthController {
 //        response.sendRedirect("https://main--namanbatest.netlify.app?token=" + token);
 //    }
 
-    // Authorization 헤더에 토큰을 포함하여 전달하는 방식
-    @GetMapping("/login/oauth2/code/kakao") // redirect URI
+    @GetMapping("/login/oauth2/code/kakao") // redirect uri
     public void kakaoLogin(@RequestParam("code") String authCode, HttpServletResponse response)
             throws IOException {
 
@@ -56,12 +55,25 @@ public class OauthController {
 
         String token = loginResult.getToken();
 
-        // Authorization 헤더에 토큰 포함
-        response.setHeader("Authorization", "Bearer " + token);
+        // 쿠키 생성
+        Cookie authorization = new Cookie("Authorization", token);
+        authorization.setSecure(true); // HTTPS 연결에서만 쿠키 전송
+        authorization.setHttpOnly(true); // JavaScript에서 접근 불가
+        authorization.setPath("/"); // 전체 경로에 대해 쿠키 적용
+        authorization.setMaxAge(3600); // 1시간 동안 유효
+        authorization.setDomain("namanbatest.netlify.app"); // 도메인 설정
 
-        // Redirect 처리 (토큰은 더 이상 URL에 포함시키지 않음)
+        // 쿠키를 응답에 추가
+        response.addCookie(authorization);
+
+        // SameSite=None을 수동으로 헤더에 추가
+        response.setHeader("Set-Cookie", "Authorization=" + token + "; Path=/; Max-Age=3600; Domain=namanbatest.netlify.app; SameSite=None; Secure; HttpOnly");
+
+        // 리다이렉트
         response.sendRedirect("https://main--namanbatest.netlify.app");
     }
+
+
 
 
     @GetMapping("/hello")
