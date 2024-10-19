@@ -14,9 +14,9 @@ public class SwaggerConfig {
     @Bean
     public OpenAPI openAPI() {
         Info info = new Info()
-                .version("2.0.0")
-                .title("HOOKING Spring Boot REST API")
-                .description("후킹 API 명세서입니다.");
+                .version("1.0.0")
+                .title("Namanba API")
+                .description("Namanba API 명세서입니다.");
 
         String jwt = "JWT";
         SecurityRequirement securityRequirement = new SecurityRequirement().addList(jwt);
