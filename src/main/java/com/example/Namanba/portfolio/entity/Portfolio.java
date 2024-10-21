@@ -21,11 +21,11 @@ public class Portfolio {
     private Long portfolioId;
 
     @OneToOne
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "user_id")  // unique 속성 제거
     private User user;
 
     @OneToOne
-    @JoinColumn(name = "position_id", nullable = true)
+    @JoinColumn(name = "position_id", nullable = true, unique = false)  // unique 속성 제거
     private Position position;
 
     public void updatePosition(Position position) {
