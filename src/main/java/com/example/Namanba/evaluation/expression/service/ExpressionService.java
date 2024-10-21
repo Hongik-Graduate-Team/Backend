@@ -1,8 +1,12 @@
 package com.example.Namanba.evaluation.expression.service;
 
+import com.example.Namanba.Interview.entity.Interview;
+import com.example.Namanba.Interview.repository.InterviewRepository;
+import com.example.Namanba.evaluation.entity.Evaluation;
 import com.example.Namanba.evaluation.entity.EvaluationContent;
 import com.example.Namanba.evaluation.expression.dto.ExpressionDataDto;
 import com.example.Namanba.evaluation.repository.EvaluationContentRepository;
+import com.example.Namanba.evaluation.repository.EvaluationRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -11,6 +15,10 @@ import org.springframework.stereotype.Service;
 public class ExpressionService {
 
     private final EvaluationContentRepository evaluationContentRepository;
+
+    private final EvaluationRepository evaluationRepository;
+
+    private final InterviewRepository interviewRepository;
 
 
     // 사용자의 면접 중 표정 비율을 계산하여 DB에 정보를 저장하는 함수
@@ -32,10 +40,11 @@ public class ExpressionService {
         // interviewID를 가져와서 그 테이블의 얼굴 표정 속서에 값을 집어 넣음
         // Evaluation 테이블에 들어가는 피드백 문장은 EvaluationContent 테이블의 상 중 하로 나뉜 문장들을 조합해서 나타냄
 
-        // 점수 매기기
         int score = calculateScore(positiveRatio, negativeRatio);
 
         String feedback = createFeedback(score);
+
+        updateFacialExpressionFeedback(interviewId, feedback);
 
         System.out.println("최종 점수: " + score);
 
@@ -81,5 +90,32 @@ public class ExpressionService {
         String feedback  = evaluationContentRepository.findByCategoryAndCriteria("expression", criteria).getMessage();
 
         return feedback;
+    }
+
+    public void updateFacialExpressionFeedback(Long interviewId, String feedback) {
+        Interview interview = interviewRepository.findByInterviewId(interviewId);
+        // 인터뷰 ID로 Evaluation을 검색
+        Evaluation evaluation = evaluationRepository.findByInterview(interview);
+
+        // Evaluation이 없으면 새로 생성
+        if (evaluation == null) {
+            evaluation = new Evaluation();
+
+            // interviewId를 사용하여 이미 존재하는 Interview 객체를 가져옴
+            //Interview interview = interviewRepository.findByInterviewId(interviewId);
+
+            // Interview가 존재하지 않을 경우 예외 처리
+            if (interview == null) {
+                throw new RuntimeException("Interview not found");
+            }
+
+            evaluation.setInterview(interview); // 기존 Interview 설정
+        }
+
+        // 얼굴 표정 피드백 설정
+        evaluation.setFacialExpressionScore(feedback); // 평가 테이블에 얼굴 표정 피드백 문장을 삽입한다.
+
+        // Evaluation 저장
+        evaluationRepository.save(evaluation);
     }
 }
