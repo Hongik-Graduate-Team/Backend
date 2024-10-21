@@ -37,6 +37,7 @@ public class OauthController {
         boolean isNewUser = loginResult.isNewUser();
 
         String token = loginResult.getToken();
+        String refreshToken = loginResult.getRefreshToken();
 
         Cookie authorization = new Cookie("Authorization", token);
         authorization.setSecure(true); // HTTPS 연결에서만 쿠키 전송 localhost에서는 허용됨. 기존 false
@@ -45,7 +46,7 @@ public class OauthController {
         authorization.setMaxAge(3600); // 1시간 동안 유효
         response.addCookie(authorization);
 
-        response.sendRedirect("https://main--namanbatest.netlify.app?token=" + token);
+        response.sendRedirect("https://main--namanbatest.netlify.app?token=" + token + "&refreshToken=" + refreshToken);
     }
 
 

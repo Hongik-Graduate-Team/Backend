@@ -112,7 +112,7 @@ public class JwtUtil {
 
     // api 요청에 대해 액세스 토큰을 검증하여 유효한 액세스 토큰을 반환해주는 함수
     public String validateAndGetAccessToken(HttpServletRequest request){
-        String accessToken = request.getHeader("Authorization");
+        String accessToken = resolveToken(request);
 
         if (accessToken == null || !validateToken(request, accessToken)){
             String refreshToken = request.getHeader("Refresh-Token");
