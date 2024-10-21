@@ -6,9 +6,8 @@ import lombok.*;
 
 @Entity
 @Builder
-@Setter
 @Table(name = "evaluation")
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 public class Evaluation {
     @Id
@@ -16,14 +15,26 @@ public class Evaluation {
     @Column(name = "evaluation_id")
     private Long evaluationId;
 
-    private String eyeControlScore;
-    private String facialExpressionScore;
-    private String gestureScore;
-    private String voiceVolumeScore;
-    private String speechRateScore;
-    private String silenceDurationScore;
+    private double eyeControl;
+    private String eyeControlMessage;
+
+    private double facialExpression;
+    private String facialExpressionMessage;
+
+    private double posture;
+    private String postureMessage;
+
+    private double voiceVolume;
+    private String voiceVolumeMessage;
+
+    private double speechRate;
+    private String speechRateMessage;
+
+    private double silenceDuration;
+    private String silenceDurationMessage;
 
     @OneToOne
     @JoinColumn(name = "interview_id")
     private Interview interview;
 }
+
