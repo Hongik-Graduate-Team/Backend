@@ -5,9 +5,13 @@ import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+import java.util.Date;
 
 @Entity
 @Getter
+@Setter
 @NoArgsConstructor
 public class User {
     @Id
@@ -27,6 +31,12 @@ public class User {
     @Enumerated(EnumType.STRING)
     @Column(name = "login_type", nullable = false)
     private LoginType loginType;
+
+    @Column(name = "refresh_token")
+    private String refreshToken;
+
+//    @Column(name = "refresh_token_expiration_date")
+//    private Date refreshTokenExpirationDate;
 
     @Builder
     public User(String nickname, String profileImageUrl, String email, LoginType loginType) {
