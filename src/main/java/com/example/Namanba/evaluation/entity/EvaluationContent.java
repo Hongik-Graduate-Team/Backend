@@ -1,13 +1,11 @@
 package com.example.Namanba.evaluation.entity;
 
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Entity
 @Builder
+@Getter
 @Table(name = "evaluation_content")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor

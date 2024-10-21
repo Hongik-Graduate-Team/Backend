@@ -1,12 +1,17 @@
 package com.example.Namanba.evaluation.expression.service;
 
+import com.example.Namanba.evaluation.entity.EvaluationContent;
 import com.example.Namanba.evaluation.expression.dto.ExpressionDataDto;
+import com.example.Namanba.evaluation.repository.EvaluationContentRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
 public class ExpressionService {
+
+    private final EvaluationContentRepository evaluationContentRepository;
+
 
     // 사용자의 면접 중 표정 비율을 계산하여 DB에 정보를 저장하는 함수
     public void evalExpression(ExpressionDataDto expressionDataDto){
@@ -30,7 +35,11 @@ public class ExpressionService {
         // 점수 매기기
         int score = calculateScore(positiveRatio, negativeRatio);
 
+        String feedback = createFeedback(score);
+
         System.out.println("최종 점수: " + score);
+
+        System.out.println("최종 피드백: " + feedback);
     }
 
     private int calculateScore(double positiveRatio, double negativeRatio){
@@ -55,5 +64,22 @@ public class ExpressionService {
         else{
             return 0; //기본 점수
         }
+    }
+
+    private String createFeedback(int score){
+        String criteria;
+        if(score>=4){
+            criteria = "Excellent";
+        }
+        else if (score>=2){
+            criteria = "Fair";
+        }
+        else{
+            criteria = "Poor";
+        }
+
+        String feedback  = evaluationContentRepository.findByCategoryAndCriteria("expression", criteria).getMessage();
+
+        return feedback;
     }
 }
