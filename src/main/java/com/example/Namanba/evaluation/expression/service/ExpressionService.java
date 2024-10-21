@@ -14,7 +14,7 @@ public class ExpressionService {
 
 
     // 사용자의 면접 중 표정 비율을 계산하여 DB에 정보를 저장하는 함수
-    public void evalExpression(ExpressionDataDto expressionDataDto){
+    public void evalExpression(Long interviewId,ExpressionDataDto expressionDataDto){
 
         int negative = expressionDataDto.getSad()
                 + expressionDataDto.getAngry()
