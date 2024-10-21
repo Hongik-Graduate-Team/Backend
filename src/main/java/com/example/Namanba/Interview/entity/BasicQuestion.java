@@ -1,6 +1,5 @@
 package com.example.Namanba.Interview.entity;
 
-import com.example.Namanba.portfolio.entity.Portfolio;
 import com.example.Namanba.portfolio.entity.subitems.Position;
 import jakarta.persistence.*;
 import lombok.*;
