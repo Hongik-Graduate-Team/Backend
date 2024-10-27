@@ -2,30 +2,51 @@ package com.example.Namanba.evaluation.entity;
 
 import com.example.Namanba.Interview.entity.Interview;
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Entity
 @Builder
 @Table(name = "evaluation")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
+@Getter
 public class Evaluation {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "evaluation_id")
     private Long evaluationId;
 
-    private String eyeControlScore;
-    private String facialExpressionScore;
-    private String gestureScore;
-    private String voiceVolumeScore;
-    private String speechRateScore;
-    private String silenceDurationScore;
+    @Column(nullable = true)
+    private double eyeControl;
+    @Column(nullable = true)
+    private String eyeControlMessage;
+    @Column(nullable = true)
+    private double facialExpression;
+    @Column(nullable = true)
+    private String facialExpressionMessage;
+    @Column(nullable = true)
+    private double gesture;
+    @Column(nullable = true)
+    private String gestureMessage;
+    @Column(nullable = true)
+    private double voiceVolume;
+    @Column(nullable = true)
+    private String voiceVolumeMessage;
+    @Column(nullable = true)
+    private double speechRate;
+    @Column(nullable = true)
+    private String speechRateMessage;
+    @Column(nullable = true)
+    private double silenceDuration;
+    @Column(nullable = true)
+    private String silenceDurationMessage;
 
     @OneToOne
-    @JoinColumn(name = "interview_id")
+    @JoinColumn(name = "interview_id", unique = true)
     private Interview interview;
+
+    public void assignGesture(double gesture, String gestureMessage){
+        this.gesture = gesture;
+        this.gestureMessage = gestureMessage;
+    }
 }
