@@ -5,12 +5,14 @@ import com.example.Namanba.expression.dto.request.ExpressionDataDto;
 import com.example.Namanba.expression.dto.response.ExpressionEvaluationDto;
 import com.example.Namanba.expression.service.ExpressionService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/{interviewId}/expression")
+@Tag(name = "사용자 표정 평가 API", description = "사용자의 표정을 평가하는 API 입니다.")
 public class ExpressionController {
     private final ExpressionService expressionService;
 
