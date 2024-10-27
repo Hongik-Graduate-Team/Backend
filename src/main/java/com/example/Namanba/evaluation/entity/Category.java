@@ -6,7 +6,9 @@ import lombok.Getter;
 @AllArgsConstructor
 @Getter
 public enum Category {
-    GESTURE("gesture");
+    GESTURE("gesture"),
+
+    EXPRESSION("expression");
 
     private final String value;
 }

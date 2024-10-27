@@ -1,4 +1,4 @@
-package com.example.Namanba.evaluation.expression.dto;
+package com.example.Namanba.expression.dto.request;
 
 import lombok.Getter;
 
