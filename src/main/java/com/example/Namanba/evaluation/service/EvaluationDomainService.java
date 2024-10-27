@@ -45,16 +45,14 @@ public class EvaluationDomainService {
     @Transactional
     public void evaluateExpression(Interview interview, ExpressionEvaluationDto expressionEvaluationDto){
         Evaluation evaluation = evaluationAdaptor.findByInterview(interview);
-        evaluation.assignExpression(expressionEvaluationDto.getExpression(), expressionEvaluationDto.getExpressionMessage());
+        // expression 값을 검증하고 기본값 설정
+        // expression 값을 검증하고 기본값 설정
+        double expressionValue = (expressionEvaluationDto.getExpression() != null)
+                ? expressionEvaluationDto.getExpression()
+                : 0.0; // null일 경우 0.0로 설정
+
+        evaluation.assignExpression(expressionValue, expressionEvaluationDto.getExpressionMessage());
         evaluationAdaptor.save(evaluation);
     }
 
-    @Transactional(readOnly = true)
-    public ExpressionEvaluationDto getExpressionEvaluation(Interview interview) {
-        Evaluation evaluation = evaluationAdaptor.findByInterview(interview);
-        return ExpressionEvaluationDto.builder()
-                .expressionMessage(evaluation.getExpressionMessage())
-                .expression(evaluation.getExpression())
-                .build();
-    }
 }

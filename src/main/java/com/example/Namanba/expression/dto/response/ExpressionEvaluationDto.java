@@ -11,11 +11,11 @@ import lombok.Getter;
 @AllArgsConstructor
 public class ExpressionEvaluationDto {
     @NotNull
-    private double expression;
+    private Double expression;
     @NotNull
     private String expressionMessage;
 
-    public static ExpressionEvaluationDto of(double expression, String expressionMessage) {
+    public static ExpressionEvaluationDto of(Double expression, String expressionMessage) {
         return ExpressionEvaluationDto.builder()
                 .expression(expression)
                 .expressionMessage(expressionMessage)

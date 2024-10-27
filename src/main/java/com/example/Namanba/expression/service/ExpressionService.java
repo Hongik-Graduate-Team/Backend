@@ -4,6 +4,7 @@ import com.example.Namanba.Interview.adaptor.InterviewAdaptor;
 import com.example.Namanba.Interview.entity.Interview;
 import com.example.Namanba.Interview.repository.InterviewRepository;
 import com.example.Namanba.evaluation.adaptor.EvaluationAdaptor;
+import com.example.Namanba.evaluation.entity.Category;
 import com.example.Namanba.evaluation.entity.Evaluation;
 import com.example.Namanba.evaluation.service.EvaluationDomainService;
 import com.example.Namanba.expression.dto.request.ExpressionDataDto;
@@ -12,6 +13,7 @@ import com.example.Namanba.evaluation.repository.EvaluationRepository;
 import com.example.Namanba.expression.dto.response.ExpressionEvaluationDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -50,13 +52,14 @@ public class ExpressionService {
 
         String feedback = createFeedback(score);
 
+        System.out.println("최종 점수: " + score);
+
+        System.out.println("최종 피드백: " + feedback);
+
         ExpressionEvaluationDto evaluationDto = createExpressionEvaluationDto(score, feedback); //표정 분석 결과 형식으로 반환
 
         evaluationDomainService.evaluateExpression(interview,evaluationDto);
 
-        System.out.println("최종 점수: " + score);
-
-        System.out.println("최종 피드백: " + feedback);
     }
 
     private int calculateScore(double positiveRatio, double negativeRatio){
@@ -66,13 +69,13 @@ public class ExpressionService {
         else if(positiveRatio >= 60 && negativeRatio<=20){
             return 4;
         }
-        else if(positiveRatio >= 50 && negativeRatio>=10 && negativeRatio<=20){
+        else if(positiveRatio >= 50 || negativeRatio>=10 && negativeRatio<=20){
             return 3;
         }
-        else if(positiveRatio >= 40 && negativeRatio>=20 && negativeRatio<=40){
+        else if(positiveRatio >= 40 || negativeRatio>=20 && negativeRatio<=40){
             return 2;
         }
-        else if(positiveRatio >= 30 && negativeRatio>=30 ){
+        else if(positiveRatio >= 30 || negativeRatio>=30 ){
             return 1;
         }
         else if(positiveRatio < 30 || negativeRatio>=70 ){
@@ -95,7 +98,7 @@ public class ExpressionService {
             criteria = "Poor";
         }
 
-        String feedback  = evaluationContentRepository.findByCategoryAndCriteria("EXPRESSION", criteria).getMessage();
+        String feedback  = evaluationContentRepository.findByCategoryAndCriteria(Category.EXPRESSION, criteria).getMessage();
 
         return feedback;
     }
@@ -108,6 +111,7 @@ public class ExpressionService {
                 .build();
     }
 
+    @Transactional
     public ExpressionEvaluationDto getExpressionEvaluationData(Long interviewId){
         Interview interview = interviewAdaptor.findByInterviewId(interviewId);
         Evaluation evaluation = evaluationAdaptor.findByInterview(interview);
