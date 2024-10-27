@@ -19,6 +19,13 @@ import java.util.List;
 public class InterviewAdaptor {
     private final InterviewRepository interviewRepository;
 
+    public boolean existsByInterview(Long interviewId){
+        return interviewRepository.existsByInterviewId(interviewId);
+    }
+    public Interview findByInterviewId(Long interviewId){
+        return interviewRepository.findById(interviewId)
+                .orElseThrow(() -> new BaseException(InterviewErrorCode.INTERVIEW_NOT_FOUND));
+    }
     public Interview save(Interview interview) {
         return interviewRepository.save(interview);
     }

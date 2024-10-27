@@ -10,6 +10,7 @@ import com.example.Namanba.Interview.entity.CustomQuestion;
 import com.example.Namanba.Interview.entity.Interview;
 import com.example.Namanba.Interview.repository.InterviewRepository;
 import com.example.Namanba.Interview.service.processor.GenerateCustomQuestionsProcessor;
+import com.example.Namanba.evaluation.service.EvaluationDomainService;
 import com.example.Namanba.portfolio.adaptor.PortfolioAdaptor;
 import com.example.Namanba.portfolio.adaptor.PositionAdaptor;
 import com.example.Namanba.portfolio.entity.Portfolio;
@@ -34,6 +35,8 @@ public class InterviewService {
     private final InterviewAdaptor interviewAdaptor;
     private final GenerateCustomQuestionsProcessor generateCustomQuestionsProcessor;
     private final InterviewRepository interviewRepository;
+    private final EvaluationDomainService evaluationDomainService;
+
 
     public InterviewDto execute(String interviewTitle, User user) {
 
@@ -41,13 +44,14 @@ public class InterviewService {
         Interview interview = setupInterviewBase(portfolio, interviewTitle);
         String customQuestions = generateCustomQuestionsProcessor.generateCustomQuestions(portfolio);
         customQuestionAdaptor.save(InterviewConverter.toCustomQuestion(interview, customQuestions));
+        evaluationDomainService.createEvaluation(interview);  // 평가 기본 구조 생성
         List<String> customQuestionList = extractQuestions(customQuestions);
 
         return InterviewConverter.toInterviewDto(interview, customQuestionList);
     }
 
     public List<String> ShowcustomQuestions(Long interviewId){
-        Interview interview = interviewRepository.findByInterviewId(interviewId);
+        Interview interview = interviewAdaptor.findByInterviewId(interviewId);
         CustomQuestion customQuestion = customQuestionAdaptor.findByInterview(interview);
         List<String> questions = extractQuestions(customQuestion.getCustomQuestions());
         return questions;
