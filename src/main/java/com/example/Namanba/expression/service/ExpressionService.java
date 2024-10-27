@@ -1,12 +1,15 @@
-package com.example.Namanba.evaluation.expression.service;
+package com.example.Namanba.expression.service;
 
+import com.example.Namanba.Interview.adaptor.InterviewAdaptor;
 import com.example.Namanba.Interview.entity.Interview;
 import com.example.Namanba.Interview.repository.InterviewRepository;
+import com.example.Namanba.evaluation.adaptor.EvaluationAdaptor;
 import com.example.Namanba.evaluation.entity.Evaluation;
-import com.example.Namanba.evaluation.entity.EvaluationContent;
-import com.example.Namanba.evaluation.expression.dto.ExpressionDataDto;
+import com.example.Namanba.evaluation.service.EvaluationDomainService;
+import com.example.Namanba.expression.dto.request.ExpressionDataDto;
 import com.example.Namanba.evaluation.repository.EvaluationContentRepository;
 import com.example.Namanba.evaluation.repository.EvaluationRepository;
+import com.example.Namanba.expression.dto.response.ExpressionEvaluationDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -14,15 +17,18 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class ExpressionService {
 
+    private final EvaluationDomainService evaluationDomainService;
+
+    private final EvaluationAdaptor evaluationAdaptor;
+
+    private final InterviewAdaptor interviewAdaptor;
+
     private final EvaluationContentRepository evaluationContentRepository;
-
-    private final EvaluationRepository evaluationRepository;
-
-    private final InterviewRepository interviewRepository;
 
 
     // 사용자의 면접 중 표정 비율을 계산하여 DB에 정보를 저장하는 함수
-    public void evalExpression(Long interviewId,ExpressionDataDto expressionDataDto){
+    public void evaluateExpression(Long interviewId, ExpressionDataDto expressionDataDto){
+        Interview interview = interviewAdaptor.findByInterviewId(interviewId);
 
         int negative = expressionDataDto.getSad()
                 + expressionDataDto.getAngry()
@@ -44,7 +50,9 @@ public class ExpressionService {
 
         String feedback = createFeedback(score);
 
-        updateFacialExpressionFeedback(interviewId, feedback);
+        ExpressionEvaluationDto evaluationDto = createExpressionEvaluationDto(score, feedback); //표정 분석 결과 형식으로 반환
+
+        evaluationDomainService.evaluateExpression(interview,evaluationDto);
 
         System.out.println("최종 점수: " + score);
 
@@ -87,35 +95,25 @@ public class ExpressionService {
             criteria = "Poor";
         }
 
-        String feedback  = evaluationContentRepository.findByCategoryAndCriteria("expression", criteria).getMessage();
+        String feedback  = evaluationContentRepository.findByCategoryAndCriteria("EXPRESSION", criteria).getMessage();
 
         return feedback;
     }
 
-    public void updateFacialExpressionFeedback(Long interviewId, String feedback) {
-        Interview interview = interviewRepository.findByInterviewId(interviewId);
-        // 인터뷰 ID로 Evaluation을 검색
-        Evaluation evaluation = evaluationRepository.findByInterview(interview);
 
-        // Evaluation이 없으면 새로 생성
-        if (evaluation == null) {
-            evaluation = new Evaluation();
+    public ExpressionEvaluationDto createExpressionEvaluationDto(double score,String feedback ){
+        return ExpressionEvaluationDto.builder()
+                .expression(score)
+                .expressionMessage(feedback)
+                .build();
+    }
 
-            // interviewId를 사용하여 이미 존재하는 Interview 객체를 가져옴
-            //Interview interview = interviewRepository.findByInterviewId(interviewId);
-
-            // Interview가 존재하지 않을 경우 예외 처리
-            if (interview == null) {
-                throw new RuntimeException("Interview not found");
-            }
-
-            evaluation.setInterview(interview); // 기존 Interview 설정
-        }
-
-        // 얼굴 표정 피드백 설정
-        evaluation.setFacialExpressionScore(feedback); // 평가 테이블에 얼굴 표정 피드백 문장을 삽입한다.
-
-        // Evaluation 저장
-        evaluationRepository.save(evaluation);
+    public ExpressionEvaluationDto getExpressionEvaluationData(Long interviewId){
+        Interview interview = interviewAdaptor.findByInterviewId(interviewId);
+        Evaluation evaluation = evaluationAdaptor.findByInterview(interview);
+        return ExpressionEvaluationDto.builder()
+                .expressionMessage(evaluation.getExpressionMessage())
+                .expression(evaluation.getExpression())
+                .build();
     }
 }

@@ -7,7 +7,7 @@ import lombok.*;
 @Entity
 @Builder
 @Table(name = "evaluation")
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor
 @AllArgsConstructor
 @Getter
 public class Evaluation {
@@ -21,9 +21,9 @@ public class Evaluation {
     @Column(nullable = true)
     private String eyeControlMessage;
     @Column(nullable = true)
-    private double facialExpression;
+    private double expression;
     @Column(nullable = true)
-    private String facialExpressionMessage;
+    private String expressionMessage;
     @Column(nullable = true)
     private double gesture;
     @Column(nullable = true)
@@ -48,5 +48,10 @@ public class Evaluation {
     public void assignGesture(double gesture, String gestureMessage){
         this.gesture = gesture;
         this.gestureMessage = gestureMessage;
+    }
+
+    public void assignExpression(double expression, String expressionMessage){
+        this.expression = expression;
+        this.expressionMessage = expressionMessage;
     }
 }
