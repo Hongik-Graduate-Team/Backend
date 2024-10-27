@@ -28,7 +28,7 @@ public class InterviewController {
         return SuccessResponse.of(interviewService.execute(interviewTitle, user));
     }
 
-    @Operation(summary = "사용자 맞춤 생성형 면접 질문이 반환됩니다.")
+    @Operation(summary = "사용자 맞춤 생성형 면접 질문이 반환됩니다. [프론트엔드 테스트용]")
     @GetMapping("/custom")
     public SuccessResponse<List<String>> getCustoms(@RequestParam Long interviewId){
         return SuccessResponse.of(interviewService.ShowcustomQuestions(interviewId));
