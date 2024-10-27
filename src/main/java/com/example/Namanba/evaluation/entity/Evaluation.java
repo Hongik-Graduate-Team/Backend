@@ -21,7 +21,7 @@ public class Evaluation {
     @Column(nullable = true)
     private String eyeControlMessage;
     @Column(nullable = true)
-    private double expression;
+    private Double expression;
     @Column(nullable = true)
     private String expressionMessage;
     @Column(nullable = true)
