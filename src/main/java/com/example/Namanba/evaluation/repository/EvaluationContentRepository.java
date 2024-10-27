@@ -8,6 +8,8 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface EvaluationContentRepository extends JpaRepository<EvaluationContent, Long> {
+
+    EvaluationContent findByCategoryAndCriteria(String category, String criteria);
     EvaluationContent findByCategoryAndCategoryDetailsAndCriteria(Category category, CategoryDetails categoryDetails, String criteria);
 }
 

@@ -1,5 +1,6 @@
 package com.example.Namanba.evaluation.repository;
 
+import com.example.Namanba.Interview.entity.Interview;
 import com.example.Namanba.evaluation.entity.Evaluation;
 import jakarta.persistence.LockModeType;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -12,9 +13,11 @@ import java.util.Optional;
 
 @Repository
 public interface EvaluationRepository extends JpaRepository<Evaluation, Long> {
-//    Optional<Evaluation> findByInterview(Interview interview);
+
+    Evaluation findByInterview(Interview interview);
     @Lock(LockModeType.PESSIMISTIC_WRITE)
     @Query("SELECT e FROM Evaluation e WHERE e.interview.interviewId = :interviewId")
     Optional<Evaluation> findWithLockByInterviewId(@Param("interviewId") Long interviewId);
-}
 
+
+}
