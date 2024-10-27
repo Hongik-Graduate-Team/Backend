@@ -1,0 +1,23 @@
+package com.example.Namanba.gesture.dto.response;
+
+import jakarta.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+
+@Getter
+@Builder
+@AllArgsConstructor
+public class GestureEvaluationDto {
+    @NotNull
+    private double gesture;
+    @NotNull
+    private String gestureMessage;
+
+    public static GestureEvaluationDto of(double gesture, String gestureMessage) {
+        return GestureEvaluationDto.builder()
+                .gesture(gesture)
+                .gestureMessage(gestureMessage)
+                .build();
+    }
+}
