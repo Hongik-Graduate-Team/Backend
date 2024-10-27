@@ -27,6 +27,7 @@ public class GestureController {
     }
 
     @Operation(summary = "자세 평가 결과를 반환합니다.")
+    @GetMapping
     public SuccessResponse<GestureEvaluationDto> evaluateGestureData(@PathVariable("interviewid") Long interviewId) {
         GestureEvaluationDto gestureEvaluation = getGestureEvaluationUseCase.execute(interviewId);
         return SuccessResponse.of(gestureEvaluation);
