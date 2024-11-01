@@ -21,10 +21,10 @@ public class Certification {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long certId;
 
-    @Column(name = "type")
+    @Column(name = "type", nullable = false)
     private String certType;
 
-    @Column(name = "date")
+    @Column(name = "date", nullable = false)
     private LocalDate certDate;
 
     @ManyToOne

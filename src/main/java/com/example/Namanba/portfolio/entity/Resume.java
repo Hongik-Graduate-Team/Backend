@@ -18,10 +18,14 @@ public class Resume {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long resumeId;
 
+    @Column(name = "question_num", nullable = false)
     private int questionNum;
 
+    @Column(name = "question", nullable = false)
     private String question;
 
+
+    @Column(name = "answer", nullable = false)
     private String answer;
 
     @ManyToOne

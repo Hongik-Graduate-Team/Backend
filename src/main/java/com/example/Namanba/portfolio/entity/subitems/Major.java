@@ -15,11 +15,11 @@ import lombok.NoArgsConstructor;
 public class Major {
 
     @Id
-    @Column(name="major_id")
+    @Column(name="major_id", nullable = false)
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long majorId;
 
-    @Column(name = "majorname")
+    @Column(name = "majorname", nullable = false)
     private String majorName;
 
     @ManyToOne

@@ -21,13 +21,13 @@ public class LanguageCert {
     @Column(name = "languagecert_id")
     private Long languageCertId;
 
-    @Column(name = "type")
+    @Column(name = "type", nullable = false)
     private String languageCertType;
 
-    @Column(name = "level")
+    @Column(name = "level", nullable = false)
     private String languageCertLevel;
 
-    @Column(name = "date")
+    @Column(name = "date", nullable = false)
     private LocalDate languageCertDate;
 
     @ManyToOne
