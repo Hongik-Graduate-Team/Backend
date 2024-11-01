@@ -17,9 +17,9 @@ public class Evaluation {
     private Long evaluationId;
 
     @Column(nullable = true)
-    private double eyeControl;
+    private double gaze;
     @Column(nullable = true)
-    private String eyeControlMessage;
+    private String gazeMessage;
     @Column(nullable = true)
     private Double expression;
     @Column(nullable = true)
