@@ -24,7 +24,7 @@ public class Portfolio {
     @JoinColumn(name = "user_id")  // unique 속성 제거
     private User user;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "position_id", nullable = true, unique = false)  // unique 속성 제거
     private Position position;
 
