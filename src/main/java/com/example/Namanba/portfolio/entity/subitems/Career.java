@@ -21,18 +21,18 @@ public class Career {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long careerId;
 
-    @Column(name = "type")
+    @Column(name = "type", nullable = false)
     private String careerType;
 
-    @Column(name = "content")
+    @Column(name = "content", nullable = false)
     private String content;
 
     // YYYY-MM-DD 형식
-    @Column(name = "start_date")
+    @Column(name = "start_date", nullable = false)
     private LocalDate startDate;
 
     // YYYY-MM-DD 형식
-    @Column(name = "end_date")
+    @Column(name = "end_date", nullable = false)
     private LocalDate endDate;
 
     @ManyToOne

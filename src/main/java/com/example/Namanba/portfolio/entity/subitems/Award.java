@@ -19,10 +19,10 @@ public class Award {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long awardId;
 
-    @Column(name = "type")
+    @Column(name = "type", nullable = false)
     private String awardType;
 
-    @Column(name = "prize")
+    @Column(name = "prize", nullable = false)
     private String awardPrize;
 
     @ManyToOne

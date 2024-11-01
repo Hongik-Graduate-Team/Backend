@@ -19,10 +19,10 @@ public class Stack {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long stackId;
 
-    @Column(name = "language")
+    @Column(name = "language", nullable = false)
     private String stackLanguage;
 
-    @Column(name = "level")
+    @Column(name = "level", nullable = false)
     private String stackLevel;
 
     @ManyToOne

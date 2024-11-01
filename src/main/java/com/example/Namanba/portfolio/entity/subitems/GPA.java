@@ -19,10 +19,10 @@ public class GPA {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long gpaId;
 
-    @Column(name = "score")
+    @Column(name = "score", nullable = false)
     private String score;
 
-    @Column(name = "total")
+    @Column(name = "total", nullable = false)
     private String total;
 
     @OneToOne
