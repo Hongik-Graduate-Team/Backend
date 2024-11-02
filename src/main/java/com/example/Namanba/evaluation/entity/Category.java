@@ -7,7 +7,7 @@ import lombok.Getter;
 @Getter
 public enum Category {
     GESTURE("gesture"),
-
+    GAZE("gaze"),
     EXPRESSION("expression");
 
     private final String value;

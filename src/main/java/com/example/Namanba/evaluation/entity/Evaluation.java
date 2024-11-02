@@ -50,6 +50,11 @@ public class Evaluation {
         this.gestureMessage = gestureMessage;
     }
 
+    public void assignGaze(double gaze, String gazeMessage){
+        this.gaze = gaze;
+        this.gazeMessage = gazeMessage;
+    }
+
     public void assignExpression(double expression, String expressionMessage){
         this.expression = expression;
         this.expressionMessage = expressionMessage;

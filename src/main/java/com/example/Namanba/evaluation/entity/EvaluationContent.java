@@ -8,7 +8,8 @@ import lombok.*;
 @Entity
 @Builder
 @Getter
-@Table(name = "evaluation_content")
+@Table(name = "evaluation_content",
+        uniqueConstraints = @UniqueConstraint(columnNames = {"category", "categoryDetails", "criteria", "message"}))
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 public class EvaluationContent {

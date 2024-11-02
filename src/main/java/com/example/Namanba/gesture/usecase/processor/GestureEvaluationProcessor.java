@@ -2,6 +2,7 @@ package com.example.Namanba.gesture.usecase.processor;
 
 import com.example.Namanba.common.annotation.Processor;
 import com.example.Namanba.evaluation.adaptor.EvaluationContentAdaptor;
+import com.example.Namanba.evaluation.entity.Category;
 import com.example.Namanba.evaluation.entity.CategoryDetails;
 import com.example.Namanba.gesture.dto.request.GestureDataDto;
 import com.example.Namanba.gesture.dto.response.GestureEvaluationDto;
@@ -15,9 +16,7 @@ import java.util.stream.Collectors;
 @Processor
 @RequiredArgsConstructor
 public class GestureEvaluationProcessor {
-
     private EvaluationContentAdaptor evaluationContentAdaptor;
-
     public GestureEvaluationDto evaluateGesture(GestureDataDto gestureData) {
         Map<CategoryDetails, GestureScore> evaluationResults = evaluateGestureDetails(gestureData);
 
@@ -46,7 +45,7 @@ public class GestureEvaluationProcessor {
                 .map(entry -> {
                     CategoryDetails categoryDetails = entry.getKey();
                     GestureScore gestureScore = entry.getValue();
-                    return evaluationContentAdaptor.fetchPostureMessageByCriteria(categoryDetails, gestureScore.name());
+                    return evaluationContentAdaptor.fetchMessageByCriteria(Category.GESTURE,categoryDetails, gestureScore.name());
                 })
                 .collect(Collectors.joining(" "));
     }
