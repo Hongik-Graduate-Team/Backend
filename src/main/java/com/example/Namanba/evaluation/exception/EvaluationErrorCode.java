@@ -8,7 +8,9 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public enum EvaluationErrorCode implements BaseErrorCode {
 
-    EVALUATION_NOT_FOUND(404, "404_EVALUATION_1","평가를 찾을 수 없습니다.");
+    EVALUATION_NOT_FOUND(404, "404_EVALUATION_1","평가를 찾을 수 없습니다."),
+    MESSAGE_NOT_FOUND(404, "404_EVALUATION_2", "평가 기준 메시지를 찾을 수 없습니다..");
+
     private final int httpStatus;
     private final String code;
     private final String message;

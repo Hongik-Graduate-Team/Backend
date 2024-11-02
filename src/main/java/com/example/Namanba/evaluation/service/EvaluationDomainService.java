@@ -7,6 +7,7 @@ import com.example.Namanba.common.exception.base.BaseException;
 import com.example.Namanba.evaluation.adaptor.EvaluationAdaptor;
 import com.example.Namanba.evaluation.entity.Evaluation;
 import com.example.Namanba.expression.dto.response.ExpressionEvaluationDto;
+import com.example.Namanba.gaze.dto.response.GazeEvaluationDto;
 import com.example.Namanba.gesture.dto.response.GestureEvaluationDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -39,6 +40,22 @@ public class EvaluationDomainService {
         return GestureEvaluationDto.builder()
                 .gestureMessage(evaluation.getGestureMessage())
                 .gesture(evaluation.getGesture())
+                .build();
+    }
+
+    @Transactional
+    public void evaluateGaze(Interview interview, GazeEvaluationDto gazeEvaluation){
+        Evaluation evaluation = evaluationAdaptor.findByInterview(interview);
+        evaluation.assignGaze(gazeEvaluation.getGaze(), gazeEvaluation.getGazeMessage());
+        evaluationAdaptor.save(evaluation);
+    }
+
+    @Transactional(readOnly = true)
+    public GazeEvaluationDto getGazeEvaluation(Interview interview){
+        Evaluation evaluation = evaluationAdaptor.findByInterview(interview);
+        return GazeEvaluationDto.builder()
+                .gazeMessage(evaluation.getGazeMessage())
+                .gaze(evaluation.getGaze())
                 .build();
     }
 

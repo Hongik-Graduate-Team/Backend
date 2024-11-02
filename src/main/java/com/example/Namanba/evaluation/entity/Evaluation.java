@@ -17,9 +17,9 @@ public class Evaluation {
     private Long evaluationId;
 
     @Column(nullable = true)
-    private double eyeControl;
+    private double gaze;
     @Column(nullable = true)
-    private String eyeControlMessage;
+    private String gazeMessage;
     @Column(nullable = true)
     private Double expression;
     @Column(nullable = true)
@@ -48,6 +48,11 @@ public class Evaluation {
     public void assignGesture(double gesture, String gestureMessage){
         this.gesture = gesture;
         this.gestureMessage = gestureMessage;
+    }
+
+    public void assignGaze(double gaze, String gazeMessage){
+        this.gaze = gaze;
+        this.gazeMessage = gazeMessage;
     }
 
     public void assignExpression(double expression, String expressionMessage){

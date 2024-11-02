@@ -16,7 +16,7 @@ public class Position {
     @Column(name = "position_id")
     private Long positionId;
 
-    @Column(name = "name")
+    @Column(name = "name", unique = true)
     private String positionName;
 
 }

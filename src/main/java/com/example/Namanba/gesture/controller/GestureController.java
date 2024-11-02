@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/{interviewid}/evaluate-posture")
+@RequestMapping("/api/{interviewId}/evaluate-gesture")
 @Tag(name = "사용자 자세 평가 API", description = "사용자의 자세를 평가하는 API 입니다.")
 public class GestureController {
 
@@ -21,7 +21,7 @@ public class GestureController {
 
     @Operation(summary = "면접자의 자세 데이터를 받아온 후 평가합니다.")
     @PostMapping
-    public SuccessResponse<Void> receivePostureData(@RequestBody GestureDataDto gestureData, @PathVariable("interviewid") Long interviewId) {
+    public SuccessResponse<Void> receiveGestureData(@RequestBody GestureDataDto gestureData, @PathVariable("interviewid") Long interviewId) {
         evaluateGestureUseCase.execute(interviewId, gestureData);
         return SuccessResponse.empty();
     }
