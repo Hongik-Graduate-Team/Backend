@@ -8,7 +8,8 @@ import lombok.*;
 @AllArgsConstructor
 @Builder
 @Getter
-@Table(name = "basic_question")
+@Table(name = "basic_question",
+        uniqueConstraints = @UniqueConstraint(columnNames = {"basic_question", "position_id"}))
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class BasicQuestion {
 
