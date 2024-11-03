@@ -15,7 +15,7 @@ import java.util.Optional;
 public interface EvaluationRepository extends JpaRepository<Evaluation, Long> {
 
     Evaluation findByInterview(Interview interview);
-    @Lock(LockModeType.PESSIMISTIC_WRITE)
+
     @Query("SELECT e FROM Evaluation e WHERE e.interview.interviewId = :interviewId")
     Optional<Evaluation> findWithLockByInterviewId(@Param("interviewId") Long interviewId);
 
