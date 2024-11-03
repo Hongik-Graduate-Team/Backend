@@ -1,8 +1,8 @@
 package com.example.Namanba.gaze.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -11,7 +11,7 @@ import java.util.stream.Collectors;
 import static com.example.Namanba.common.constant.StaticValue.*;
 
 // 시선 위치
-public class Direction {
+public class DirectionCounts {
     @JsonProperty(required = true)
     private double up;
     @JsonProperty(required = true)
@@ -31,11 +31,13 @@ public class Direction {
         return 0.5 * (centerX / directionX + centerY / directionY);
     }
 
+    @JsonIgnore
     public String getTopDirection(){
         List<String> sortedDirections  = getSortedDirections();
         return !sortedDirections .isEmpty() ? sortedDirections .get(0) : "";
     }
 
+    @JsonIgnore
     public String getTopTwoDirections(){
         return getTopDirection() + ", " + getSecondDirections();
     }
