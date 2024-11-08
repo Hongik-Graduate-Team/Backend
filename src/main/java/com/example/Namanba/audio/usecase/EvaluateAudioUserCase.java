@@ -14,16 +14,16 @@ import org.springframework.web.multipart.MultipartFile;
 @UseCase
 @RequiredArgsConstructor
 public class EvaluateAudioUserCase {
-    private final AudioEvaluationProcessor audioEvaluationProcessor;
+    //private final AudioEvaluationProcessor audioEvaluationProcessor;
 
     private final EvaluationDomainService evaluationDomainService;
 
     private final InterviewAdaptor interviewAdaptor;
 
     public void execute(Long interviewId, MultipartFile audioFile) {
-        AudioEvaluationDto audioEvaluation = audioEvaluationProcessor.evaluateAudio(audioFile);
-        Interview interview = interviewAdaptor.findByInterviewId(interviewId);
-        evaluationDomainService.evaluateSilenceDuration(interview, audioEvaluation);
+        //AudioEvaluationDto audioEvaluation = audioEvaluationProcessor.evaluateAudio(audioFile);
+        //Interview interview = interviewAdaptor.findByInterviewId(interviewId);
+        //evaluationDomainService.evaluateSilenceDuration(interview, audioEvaluation);
         /*
         1. 음성파일을 받아와서 침묵 시간을 계산하여 (점수, 피드백) dto를 생성한다.
         2. 인터뷰를 찾는다

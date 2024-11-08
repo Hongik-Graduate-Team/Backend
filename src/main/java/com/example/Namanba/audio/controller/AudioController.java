@@ -3,9 +3,13 @@ package com.example.Namanba.audio.controller;
 import com.example.Namanba.audio.usecase.AnalyzeAudioUseCase;
 import com.example.Namanba.common.response.SuccessResponse;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Schema;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -22,9 +26,19 @@ public class AudioController {
     private final AnalyzeAudioUseCase analyzeAudioUseCase;
 
     @Operation(summary = "면접자의 음성 데이터를 받아온 후 평가합니다.")
-    @PostMapping
-    public SuccessResponse<Void> getAudioData(@RequestParam("audio") MultipartFile audioFile,
-                                              @PathVariable("interviewId") Long interviewId) {
+    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public SuccessResponse<Void> getAudioData(
+            @Parameter(
+                    description = "음성 파일 (오디오 형식)",
+                    required = true,
+                    content = @Content(
+                            mediaType = MediaType.MULTIPART_FORM_DATA_VALUE,
+                            schema = @Schema(type = "string", format = "binary")
+                    )
+            )
+            @RequestParam("audio") MultipartFile audioFile,
+            @PathVariable("interviewId") Long interviewId
+    ) {
         analyzeAudioUseCase.execute(audioFile); //음성 파일이 비어있는지 확인
         try {
             // 파일 저장 경로
