@@ -1,6 +1,5 @@
 package com.example.Namanba.audio.usecase.processor;
 
-import com.github.webrtcvad.Vad;
 import be.tarsos.dsp.AudioDispatcher;
 import be.tarsos.dsp.io.TarsosDSPAudioFormat;
 import be.tarsos.dsp.io.TarsosDSPAudioInputStream;
@@ -25,8 +24,8 @@ import java.io.File;
 import java.io.InputStream;
 
 public class AudioEvaluationProcessor {
-    public AudioEvaluationDto evaluateAudio(MultipartFile audioFile) {
-
-
-    }
+//    public AudioEvaluationDto evaluateAudio(MultipartFile audioFile) {
+//
+//
+//    }
 }
