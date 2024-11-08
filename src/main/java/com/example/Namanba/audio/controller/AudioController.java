@@ -1,6 +1,7 @@
 package com.example.Namanba.audio.controller;
 
 import com.example.Namanba.audio.usecase.AnalyzeAudioUseCase;
+import com.example.Namanba.audio.usecase.processor.AudioEvaluationProcessor;
 import com.example.Namanba.common.response.SuccessResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -12,6 +13,7 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Schema;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -24,6 +26,8 @@ import java.nio.file.Paths;
 public class AudioController {
 
     private final AnalyzeAudioUseCase analyzeAudioUseCase;
+
+    private final AudioEvaluationProcessor audioEvaluationProcessor;
 
     @Operation(summary = "면접자의 음성 데이터를 받아온 후 평가합니다.")
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -53,11 +57,17 @@ public class AudioController {
             // 파일 저장
             Files.write(path, audioFile.getBytes());
 
+            // MultipartFile을 File로 변환
+            File convertedFile = new File(path.toUri());
+
+            audioEvaluationProcessor.processAudio(convertedFile);
+
         } catch (IOException e) {
             e.printStackTrace();
             // 적절한 예외 처리
             throw new RuntimeException("파일 처리 중 오류 발생", e);
         }
+
 
         return SuccessResponse.empty();
     }
