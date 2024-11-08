@@ -72,6 +72,9 @@ dependencies {
 	// OpenFeign
 	implementation 'org.springframework.cloud:spring-cloud-starter-openfeign'
 	implementation 'io.github.openfeign:feign-jackson:12.3'
+
+	// tarsosDSP
+	implementation 'com.github.joerg-blech:tarsosdsp:2.4'
 }
 
 dependencyManagement {
