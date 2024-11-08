@@ -8,6 +8,11 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/{interviewId}/audio")
@@ -21,6 +26,24 @@ public class AudioController {
     public SuccessResponse<Void> getAudioData(@RequestParam("audio") MultipartFile audioFile,
                                               @PathVariable("interviewId") Long interviewId) {
         analyzeAudioUseCase.execute(audioFile); //음성 파일이 비어있는지 확인
+        try {
+            // 파일 저장 경로
+            String fileName = audioFile.getOriginalFilename();
+            Path path = Paths.get("uploads/" + fileName);
+
+            // 디렉토리 존재 여부 확인 후 생성
+            if (!Files.exists(path.getParent())) {
+                Files.createDirectories(path.getParent());
+            }
+
+            // 파일 저장
+            Files.write(path, audioFile.getBytes());
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            // 적절한 예외 처리
+            throw new RuntimeException("파일 처리 중 오류 발생", e);
+        }
 
         return SuccessResponse.empty();
     }
