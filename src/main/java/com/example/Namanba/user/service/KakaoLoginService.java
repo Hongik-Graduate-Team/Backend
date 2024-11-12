@@ -38,7 +38,12 @@ public class KakaoLoginService {
 
         String token = createToken(user);
 
-        return new LoginResultDto(token, isNewUser);
+        String refreshToken = createRefreshToken(user);
+
+        user.setRefreshToken(refreshToken);
+         userRepository.save(user); //리프레시 토큰을 db에 저장
+
+        return new LoginResultDto(token, isNewUser, refreshToken);
     }
 
     private String exchangeKakaoAccessToken(String authorizationCode) {
@@ -51,6 +56,10 @@ public class KakaoLoginService {
 
     private String createToken(User user) {
         return jwtUtil.createToken(user.getUserId());
+    }
+
+    private String createRefreshToken(User user){
+        return jwtUtil.createRefreshToken(user.getUserId());
     }
 
     private User registerUser(SocialUserProfileDto userProfile) {
