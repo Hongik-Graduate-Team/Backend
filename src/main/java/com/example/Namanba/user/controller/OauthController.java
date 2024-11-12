@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
@@ -29,8 +31,8 @@ public class OauthController {
     }
 
     // kakao로부터 인가코드를 전달받는 리다이렉트 uri
-    @GetMapping("/login/oauth2/code/kakao") //redirect uri
-    public void kakaoLogin(@RequestParam("code") String authCode, HttpServletResponse response)
+    @GetMapping("/login/oauth2/code/kakao") // Redirect URI
+    public ResponseEntity<Map<String, String>> kakaoLogin(@RequestParam("code") String authCode, HttpServletResponse response)
             throws IOException {
 
         LoginResultDto loginResult = kakaoLoginService.handleKakaoLogin(authCode);
@@ -40,15 +42,19 @@ public class OauthController {
         String refreshToken = loginResult.getRefreshToken();
 
         Cookie authorization = new Cookie("Authorization", token);
-        authorization.setSecure(true); // HTTPS 연결에서만 쿠키 전송 localhost에서는 허용됨. 기존 false
-        authorization.setHttpOnly(false); // JavaScript에서 접근 불가=백엔드에서만 접근 가능 -> false
-        authorization.setPath("/"); // 전체 경로에 대해 쿠키 적용
+        authorization.setSecure(true); // HTTPS 연결에서만 쿠키 전송
+        authorization.setHttpOnly(false); // JavaScript에서 접근 가능하게 설정
+        authorization.setPath("/"); // 전체 경로에 쿠키 적용
         authorization.setMaxAge(3600); // 1시간 동안 유효
         response.addCookie(authorization);
 
-        response.sendRedirect("https://main--namanbatest.netlify.app?token=" + token + "&refreshToken=" + refreshToken);
-    }
+        // JSON 응답에 포함할 데이터
+        Map<String, String> tokens = new HashMap<>();
+        tokens.put("token", token);
+        tokens.put("refreshToken", refreshToken);
 
+        return ResponseEntity.ok(tokens);
+    }
 
 
 
