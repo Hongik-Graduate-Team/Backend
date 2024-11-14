@@ -48,7 +48,7 @@ public class AudioController {
             @RequestParam("audio") MultipartFile audioFile,
             @PathVariable("interviewId") Long interviewId
     ) {
-        analyzeAudioUseCase.execute(audioFile); //음성 파일이 비어있는지 확인
+        analyzeAudioUseCase.execute(audioFile);
 
         evaluateAudioUserCase.execute(interviewId, audioStorageUseCase.execute(audioFile));
 

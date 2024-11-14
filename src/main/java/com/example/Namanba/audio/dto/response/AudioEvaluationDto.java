@@ -12,8 +12,15 @@ import lombok.Getter;
 public class AudioEvaluationDto {
     @NotNull
     private double silenceDuration; // 침묵 시간에 대한 점수
+
+    @NotNull
+    private double voiceVolume; // 목소리 크기에 대한 점수
+
     @NotNull
     private String silenceDurationMessage; // 침묵 시간에 대한 피드백
+
+    @NotNull
+    private String voiceVolumeMessage; // 목소리 크게에 대한 피드백
 
     public static AudioEvaluationDto of(double silenceDuration, String silenceDurationMessage) {
         return AudioEvaluationDto.builder()
