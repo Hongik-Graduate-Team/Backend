@@ -8,7 +8,9 @@ import lombok.Getter;
 public enum Category {
     GESTURE("gesture"),
     GAZE("gaze"),
-    EXPRESSION("expression");
+    EXPRESSION("expression"),
+
+    SILENCEDURATION("silenceDuration");
 
     private final String value;
 }

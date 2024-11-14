@@ -3,6 +3,7 @@ package com.example.Namanba.evaluation.service;
 import com.example.Namanba.Interview.adaptor.InterviewAdaptor;
 import com.example.Namanba.Interview.entity.Interview;
 import com.example.Namanba.Interview.exception.InterviewErrorCode;
+import com.example.Namanba.audio.dto.response.AudioEvaluationDto;
 import com.example.Namanba.common.exception.base.BaseException;
 import com.example.Namanba.evaluation.adaptor.EvaluationAdaptor;
 import com.example.Namanba.evaluation.entity.Evaluation;
@@ -57,6 +58,13 @@ public class EvaluationDomainService {
                 .gazeMessage(evaluation.getGazeMessage())
                 .gaze(evaluation.getGaze())
                 .build();
+    }
+
+    @Transactional
+    public void evaluateSilenceDuration(Interview interview, AudioEvaluationDto audioEvaluationDto){
+        Evaluation evaluation = evaluationAdaptor.findByInterview(interview);
+        evaluation.assignSilenceDuration(audioEvaluationDto.getSilenceDuration(), audioEvaluationDto.getSilenceDurationMessage());
+        evaluationAdaptor.save(evaluation);
     }
 
     @Transactional

@@ -59,4 +59,9 @@ public class Evaluation {
         this.expression = expression;
         this.expressionMessage = expressionMessage;
     }
+
+    public void assignSilenceDuration(double silenceDuration, String silenceDurationMessage){
+        this.silenceDuration = silenceDuration;
+        this.silenceDurationMessage = silenceDurationMessage;
+    }
 }
