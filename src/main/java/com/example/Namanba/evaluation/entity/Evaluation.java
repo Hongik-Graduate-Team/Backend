@@ -17,7 +17,7 @@ public class Evaluation {
     private Long evaluationId;
 
     @Column(nullable = true)
-    private double gaze;
+    private Double gaze;
     @Column(nullable = true)
     private String gazeMessage;
     @Column(nullable = true)
@@ -25,19 +25,19 @@ public class Evaluation {
     @Column(nullable = true)
     private String expressionMessage;
     @Column(nullable = true)
-    private double gesture;
+    private Double gesture;
     @Column(nullable = true)
     private String gestureMessage;
     @Column(nullable = true)
-    private double voiceVolume;
+    private Double voiceVolume;
     @Column(nullable = true)
     private String voiceVolumeMessage;
     @Column(nullable = true)
-    private double speechRate;
+    private Double speechRate;
     @Column(nullable = true)
     private String speechRateMessage;
     @Column(nullable = true)
-    private double silenceDuration;
+    private Double silenceDuration;
     @Column(nullable = true)
     private String silenceDurationMessage;
 

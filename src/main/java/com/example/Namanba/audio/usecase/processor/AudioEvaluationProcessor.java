@@ -3,28 +3,20 @@ package com.example.Namanba.audio.usecase.processor;
 import be.tarsos.dsp.AudioDispatcher;
 import be.tarsos.dsp.AudioEvent;
 import be.tarsos.dsp.AudioProcessor;
-import be.tarsos.dsp.SilenceDetector;
-import be.tarsos.dsp.io.TarsosDSPAudioInputStream;
 import be.tarsos.dsp.io.jvm.AudioDispatcherFactory;
-import be.tarsos.dsp.pitch.PitchProcessor;
 import com.example.Namanba.audio.dto.response.AudioEvaluationDto;
 import com.example.Namanba.common.annotation.Processor;
 import com.example.Namanba.evaluation.entity.Category;
 import com.example.Namanba.evaluation.repository.EvaluationContentRepository;
 import com.example.Namanba.evaluation.service.EvaluationDomainService;
-import com.example.Namanba.expression.dto.response.ExpressionEvaluationDto;
-import com.example.Namanba.gaze.dto.response.GazeEvaluationDto;
 import lombok.RequiredArgsConstructor;
 
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.UnsupportedAudioFileException;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.HashMap;
-import java.util.Map;
+import java.io.*;
+import java.util.*;
 
 @Processor
 @RequiredArgsConstructor
@@ -158,12 +150,6 @@ public class AudioEvaluationProcessor {
         return feedback;
     }
 
-    public AudioEvaluationDto createAudioEvaluationDto(double score, String feedback ){
-        return AudioEvaluationDto.builder()
-                .silenceDuration(score)
-                .silenceDurationMessage(feedback)
-                .build();
-    }
 
 
     // 발화 속도 계산 메서드 (분당 단어 수)
@@ -214,7 +200,6 @@ public class AudioEvaluationProcessor {
         }
 
         System.out.println("목소리크기: "+volume);
-
 
         return volume; // 카운트가 0이면 0 반환
     }
