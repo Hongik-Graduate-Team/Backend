@@ -4,6 +4,7 @@ import com.example.Namanba.audio.usecase.AnalyzeAudioUseCase;
 import com.example.Namanba.audio.usecase.EvaluateAudioUserCase;
 import com.example.Namanba.audio.usecase.processor.AudioEvaluationProcessor;
 import com.example.Namanba.common.response.SuccessResponse;
+import com.example.Namanba.gaze.dto.response.GazeEvaluationDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -76,4 +77,11 @@ public class AudioController {
 
         return SuccessResponse.empty();
     }
+
+//    @Operation(summary = "음성 평가 결과를 반환합니다.")
+//    @GetMapping
+//    public SuccessResponse<GazeEvaluationDto> evaluateGazeData(@PathVariable("interviewId") Long interviewId) {
+//        GazeEvaluationDto gazeEvaluation = getGazeEvaluationUseCase.execute(interviewId);
+//        return SuccessResponse.of(gazeEvaluation);
+//    }
 }
