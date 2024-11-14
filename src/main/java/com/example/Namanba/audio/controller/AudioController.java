@@ -1,6 +1,7 @@
 package com.example.Namanba.audio.controller;
 
 import com.example.Namanba.audio.usecase.AnalyzeAudioUseCase;
+import com.example.Namanba.audio.usecase.EvaluateAudioUserCase;
 import com.example.Namanba.audio.usecase.processor.AudioEvaluationProcessor;
 import com.example.Namanba.common.response.SuccessResponse;
 import io.swagger.v3.oas.annotations.Operation;
@@ -26,6 +27,8 @@ import java.nio.file.Paths;
 public class AudioController {
 
     private final AnalyzeAudioUseCase analyzeAudioUseCase;
+
+    private final EvaluateAudioUserCase evaluateAudioUserCase;
 
     private final AudioEvaluationProcessor audioEvaluationProcessor;
 
@@ -60,7 +63,9 @@ public class AudioController {
             // MultipartFile을 File로 변환
             File convertedFile = new File(path.toUri());
 
-            audioEvaluationProcessor.processAudio(convertedFile);
+            //audioEvaluationProcessor.processAudio(convertedFile);
+            evaluateAudioUserCase.execute(interviewId, convertedFile);
+
 
         } catch (IOException e) {
             e.printStackTrace();
