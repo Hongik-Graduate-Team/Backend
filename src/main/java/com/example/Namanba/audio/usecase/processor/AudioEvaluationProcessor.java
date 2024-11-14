@@ -70,18 +70,13 @@ public class AudioEvaluationProcessor {
     private double calculateSilenceRatio(AudioDispatcher dispatcher) {
         final double[] totalDuration = {0};
         final double[] silenceDuration = {0};
+        final double[] previousTimestamp = {0}; // 이전 타임스탬프를 배열로 정의하여 상태 유지
 
-        // 오디오 이벤트에서 전체 시간과 침묵 시간을 계산
         dispatcher.addAudioProcessor(new AudioProcessor() {
             @Override
             public boolean process(AudioEvent audioEvent) {
-                double previousTimestamp = 0;
                 // 전체 시간 기록: 오디오 이벤트의 마지막 타임스탬프 업데이트
-                if (totalDuration[0] == 0) {
-                    totalDuration[0] = audioEvent.getTimeStamp(); // 첫 번째 이벤트에서 전체 시간 초기화
-                } else {
-                    totalDuration[0] = audioEvent.getTimeStamp(); // 마지막 이벤트에서 전체 시간 업데이트
-                }
+                totalDuration[0] = audioEvent.getTimeStamp();
 
                 // 데시벨 계산 (침묵 구간 판별)
                 float[] buffer = audioEvent.getFloatBuffer();
@@ -96,13 +91,13 @@ public class AudioEvaluationProcessor {
                 double threshold = -50.0;
                 if (decibel < threshold) {
                     // 침묵 구간의 지속 시간을 누적
-                    if (previousTimestamp > 0) {
-                        silenceDuration[0] += audioEvent.getTimeStamp() - previousTimestamp;
+                    if (previousTimestamp[0] > 0) {
+                        silenceDuration[0] += audioEvent.getTimeStamp() - previousTimestamp[0];
                     }
                 }
 
                 // 이전 타임스탬프 업데이트
-                previousTimestamp = audioEvent.getTimeStamp();
+                previousTimestamp[0] = audioEvent.getTimeStamp();
 
                 return true;
             }
@@ -115,11 +110,12 @@ public class AudioEvaluationProcessor {
 
         dispatcher.run();  // 전체 시간과 침묵 시간 계산
 
-        System.out.println("침묵"+silenceDuration[0]);
-        System.out.println("전체"+totalDuration[0]);
+        System.out.println("침묵: " + silenceDuration[0]);
+        System.out.println("전체: " + totalDuration[0]);
         // 침묵 비율 계산
         return silenceDuration[0] / totalDuration[0];
     }
+
 
     // 발화 속도 계산 메서드 (분당 단어 수)
     /*
