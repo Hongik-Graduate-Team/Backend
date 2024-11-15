@@ -12,7 +12,9 @@ public enum Category {
 
     SILENCEDURATION("silenceDuration"),
 
-    VOICEVOLUME("voiceVolume");
+    VOICEVOLUME("voiceVolume"),
+
+    SPEECHRATE("speechRate");
 
     private final String value;
 }

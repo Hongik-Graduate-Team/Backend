@@ -17,10 +17,16 @@ public class AudioEvaluationDto {
     private double voiceVolume; // 목소리 크기에 대한 점수
 
     @NotNull
+    private double speechRate; // 발화 속도에 대한 점수
+
+    @NotNull
     private String silenceDurationMessage; // 침묵 시간에 대한 피드백
 
     @NotNull
-    private String voiceVolumeMessage; // 목소리 크게에 대한 피드백
+    private String voiceVolumeMessage; // 목소리 크기에 대한 피드백
+
+    @NotNull
+    private String speechRateMessage; // 발화 속도에 대한 피드백
 
     // 침묵 시간에 대한 점수와 피드백을 위한 of 메서드
     public static AudioEvaluationDto ofSilenceDuration(double silenceDuration, String silenceDurationMessage) {
@@ -35,6 +41,14 @@ public class AudioEvaluationDto {
         return AudioEvaluationDto.builder()
                 .voiceVolume(voiceVolume)
                 .voiceVolumeMessage(voiceVolumeMessage)
+                .build();
+    }
+
+    // 발화 속도에 대한 점수와 피드백을 위한 of 메서드
+    public static AudioEvaluationDto ofSpeechRate(double speechRate, String speechRateMessage) {
+        return AudioEvaluationDto.builder()
+                .speechRate(speechRate)
+                .speechRateMessage(speechRateMessage)
                 .build();
     }
 
