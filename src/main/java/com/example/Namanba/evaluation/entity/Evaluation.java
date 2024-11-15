@@ -64,4 +64,9 @@ public class Evaluation {
         this.silenceDuration = silenceDuration;
         this.silenceDurationMessage = silenceDurationMessage;
     }
+
+    public void assignVoiceVolume(double voiceVolume, String voiceVolumeMessage){
+        this.voiceVolume = voiceVolume;
+        this.voiceVolumeMessage = voiceVolumeMessage;
+    }
 }

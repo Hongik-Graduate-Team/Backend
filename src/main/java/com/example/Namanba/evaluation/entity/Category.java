@@ -10,7 +10,9 @@ public enum Category {
     GAZE("gaze"),
     EXPRESSION("expression"),
 
-    SILENCEDURATION("silenceDuration");
+    SILENCEDURATION("silenceDuration"),
+
+    VOICEVOLUME("voiceVolume");
 
     private final String value;
 }

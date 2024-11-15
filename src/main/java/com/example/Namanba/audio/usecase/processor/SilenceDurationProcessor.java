@@ -20,7 +20,7 @@ import java.util.*;
 
 @Processor
 @RequiredArgsConstructor
-public class AudioEvaluationProcessor {
+public class SilenceDurationProcessor {
 
     private final EvaluationContentRepository evaluationContentRepository;
 
@@ -35,9 +35,6 @@ public class AudioEvaluationProcessor {
             // 침묵 구간 계산 및 결과 맵 반환
             Map<String, Object> resultMap = calculateSilenceRatio(dispatcher);
 
-            // 평균 목소리 크키 반환
-            calculateAverageDecibel(audioFile);
-
             // Map에서 score와 message를 꺼내서 AudioEvaluationDto 생성
             int score = (int) resultMap.get("score");
             String message = (String) resultMap.get("message");
@@ -48,7 +45,7 @@ public class AudioEvaluationProcessor {
             e.printStackTrace();
         }
 
-        return null; // 예외 발생 시 null 반환 (예외 처리를 추가할 수 있습니다)
+        return null;
     }
 
 
@@ -168,57 +165,6 @@ public class AudioEvaluationProcessor {
         dispatcher.run();  // 발화 속도를 계산
         return (wordCount[0] / (duration[0] / 60));  // 분당 단어 수 (WPM)
     }
-     */
-    // 데시벨 계산 메서드
-    public double calculateAverageDecibel(File audioFile) throws UnsupportedAudioFileException, IOException {
-        AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(audioFile);
-        AudioFormat format = audioInputStream.getFormat();
-        long frameLength = audioInputStream.getFrameLength();
-        int frameSize = format.getFrameSize();
-
-        byte[] buffer = new byte[frameSize];
-        double sum = 0;
-        int count = 0;
-
-        try {
-            while (audioInputStream.read(buffer) != -1) {
-                double rms = calculateRMS(buffer, format);
-
-                if (rms > 0) {  // RMS 값이 0일 때 데시벨 계산을 피함
-                    double decibel = 20 * Math.log10(rms);
-                    sum += decibel;
-                    count++;
-                }
-            }
-        } finally {
-            audioInputStream.close();
-        }
-        double volume=0;
-
-        if(count>0){
-            volume = sum / count;
-        }
-
-        System.out.println("목소리크기: "+volume);
-
-        return volume; // 카운트가 0이면 0 반환
-    }
-
-    private double calculateRMS(byte[] buffer, AudioFormat format) {
-        double sum = 0;
-        int sampleSizeInBytes = format.getSampleSizeInBits() / 8;
-
-        for (int i = 0; i < buffer.length; i += sampleSizeInBytes) {
-            int sample = 0;
-            for (int j = 0; j < sampleSizeInBytes; j++) {
-                sample |= (buffer[i + j] & 0xFF) << (j * 8);
-            }
-
-            float normalizedSample = sample / (float) Math.pow(2, format.getSampleSizeInBits() - 1);
-            sum += normalizedSample * normalizedSample;
-        }
-
-        return Math.sqrt(sum / (buffer.length / sampleSizeInBytes));
-    }
+    */
 
 }
