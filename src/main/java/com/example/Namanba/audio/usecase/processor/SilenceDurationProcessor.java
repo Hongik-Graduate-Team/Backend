@@ -3,33 +3,26 @@ package com.example.Namanba.audio.usecase.processor;
 import be.tarsos.dsp.AudioDispatcher;
 import be.tarsos.dsp.AudioEvent;
 import be.tarsos.dsp.AudioProcessor;
-import be.tarsos.dsp.SilenceDetector;
-import be.tarsos.dsp.io.TarsosDSPAudioInputStream;
 import be.tarsos.dsp.io.jvm.AudioDispatcherFactory;
-import be.tarsos.dsp.pitch.PitchProcessor;
 import com.example.Namanba.audio.dto.response.AudioEvaluationDto;
 import com.example.Namanba.common.annotation.Processor;
 import com.example.Namanba.evaluation.entity.Category;
 import com.example.Namanba.evaluation.repository.EvaluationContentRepository;
 import com.example.Namanba.evaluation.service.EvaluationDomainService;
-import com.example.Namanba.expression.dto.response.ExpressionEvaluationDto;
-import com.example.Namanba.gaze.dto.response.GazeEvaluationDto;
 import lombok.RequiredArgsConstructor;
 
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioInputStream;
-import java.io.File;
-import java.io.InputStream;
-import java.util.HashMap;
-import java.util.Map;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.UnsupportedAudioFileException;
+import java.io.*;
+import java.util.*;
 
 @Processor
 @RequiredArgsConstructor
-public class AudioEvaluationProcessor {
+public class SilenceDurationProcessor {
 
     private final EvaluationContentRepository evaluationContentRepository;
-
-    private final EvaluationDomainService evaluationDomainService;
 
     // 오디오 파일을 처리하는 메서드
     public AudioEvaluationDto processAudio(File audioFile) {
@@ -44,18 +37,15 @@ public class AudioEvaluationProcessor {
             int score = (int) resultMap.get("score");
             String message = (String) resultMap.get("message");
 
-            return AudioEvaluationDto.of(score, message);
+            return AudioEvaluationDto.ofSilenceDuration(score,message);
 
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-        return null; // 예외 발생 시 null 반환 (예외 처리를 추가할 수 있습니다)
+        return null;
     }
 
-
-    // 전체 시간과 침묵 시간 비율을 계산하는 메서드
-    // 전체 시간과 침묵 시간 비율을 계산하고 Map으로 반환하는 메서드
     private Map<String, Object> calculateSilenceRatio(AudioDispatcher dispatcher) {
         final double[] totalDuration = {0};
         final double[] silenceDuration = {0};
@@ -152,12 +142,6 @@ public class AudioEvaluationProcessor {
         return feedback;
     }
 
-    public AudioEvaluationDto createAudioEvaluationDto(double score, String feedback ){
-        return AudioEvaluationDto.builder()
-                .silenceDuration(score)
-                .silenceDurationMessage(feedback)
-                .build();
-    }
 
 
     // 발화 속도 계산 메서드 (분당 단어 수)
@@ -176,27 +160,6 @@ public class AudioEvaluationProcessor {
         dispatcher.run();  // 발화 속도를 계산
         return (wordCount[0] / (duration[0] / 60));  // 분당 단어 수 (WPM)
     }
-     */
-    // 데시벨 계산 메서드
-    /*
-     private double calculateAverageDecibel(AudioDispatcher dispatcher) {
-        final double[] sum = {0};
-        final int[] count = {0};
+    */
 
-        dispatcher.addAudioProcessor((audioEvent) -> {
-            float[] buffer = audioEvent.getFloatBuffer();
-            double rms = 0.0;
-            for (float sample : buffer) {
-                rms += sample * sample;
-            }
-            rms = Math.sqrt(rms / buffer.length);
-            double decibel = 20 * Math.log10(rms);
-            sum[0] += decibel;
-            count[0]++;
-        });
-
-        dispatcher.run();  // 디스패처가 실행되면서 오디오 데이터를 처리
-        return sum[0] / count[0];
-    }
-     */
 }

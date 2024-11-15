@@ -12,13 +12,39 @@ import lombok.Getter;
 public class AudioEvaluationDto {
     @NotNull
     private double silenceDuration; // 침묵 시간에 대한 점수
+
+    @NotNull
+    private double voiceVolume; // 목소리 크기에 대한 점수
+
     @NotNull
     private String silenceDurationMessage; // 침묵 시간에 대한 피드백
 
-    public static AudioEvaluationDto of(double silenceDuration, String silenceDurationMessage) {
+    @NotNull
+    private String voiceVolumeMessage; // 목소리 크게에 대한 피드백
+
+    // 침묵 시간에 대한 점수와 피드백을 위한 of 메서드
+    public static AudioEvaluationDto ofSilenceDuration(double silenceDuration, String silenceDurationMessage) {
         return AudioEvaluationDto.builder()
                 .silenceDuration(silenceDuration)
                 .silenceDurationMessage(silenceDurationMessage)
+                .build();
+    }
+
+    // 목소리 크기에 대한 점수와 피드백을 위한 of 메서드
+    public static AudioEvaluationDto ofVoiceVolume(double voiceVolume, String voiceVolumeMessage) {
+        return AudioEvaluationDto.builder()
+                .voiceVolume(voiceVolume)
+                .voiceVolumeMessage(voiceVolumeMessage)
+                .build();
+    }
+
+    // 침묵 시간과 목소리 크기에 대한 점수 및 메시지를 모두 포함한 of 메서드
+    public static AudioEvaluationDto of(double silenceDuration, double voiceVolume, String silenceDurationMessage, String voiceVolumeMessage) {
+        return AudioEvaluationDto.builder()
+                .silenceDuration(silenceDuration)
+                .voiceVolume(voiceVolume)
+                .silenceDurationMessage(silenceDurationMessage)
+                .voiceVolumeMessage(voiceVolumeMessage)
                 .build();
     }
 }

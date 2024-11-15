@@ -1,9 +1,10 @@
 package com.example.Namanba.audio.controller;
 
 import com.example.Namanba.audio.usecase.AnalyzeAudioUseCase;
+import com.example.Namanba.audio.usecase.AudioStorageUseCase;
 import com.example.Namanba.audio.usecase.EvaluateAudioUserCase;
-import com.example.Namanba.audio.usecase.processor.AudioEvaluationProcessor;
 import com.example.Namanba.common.response.SuccessResponse;
+import com.example.Namanba.gaze.dto.response.GazeEvaluationDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -25,12 +26,11 @@ import java.nio.file.Paths;
 @RequestMapping("/api/{interviewId}/audio")
 @Tag(name = "사용자 음성 평가 API", description = "사용자의 음성(침묵 시간, 발화 속도, 목소리 크기)을 평가하는 API 입니다.")
 public class AudioController {
-
+    private final AudioStorageUseCase audioStorageUseCase;
     private final AnalyzeAudioUseCase analyzeAudioUseCase;
 
     private final EvaluateAudioUserCase evaluateAudioUserCase;
 
-    private final AudioEvaluationProcessor audioEvaluationProcessor;
 
     @Operation(summary = "면접자의 음성 데이터를 받아온 후 평가합니다.")
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -46,34 +46,17 @@ public class AudioController {
             @RequestParam("audio") MultipartFile audioFile,
             @PathVariable("interviewId") Long interviewId
     ) {
-        analyzeAudioUseCase.execute(audioFile); //음성 파일이 비어있는지 확인
-        try {
-            // 파일 저장 경로
-            String fileName = audioFile.getOriginalFilename();
-            Path path = Paths.get("uploads/" + fileName);
+        analyzeAudioUseCase.execute(audioFile);
 
-            // 디렉토리 존재 여부 확인 후 생성
-            if (!Files.exists(path.getParent())) {
-                Files.createDirectories(path.getParent());
-            }
-
-            // 파일 저장
-            Files.write(path, audioFile.getBytes());
-
-            // MultipartFile을 File로 변환
-            File convertedFile = new File(path.toUri());
-
-            //audioEvaluationProcessor.processAudio(convertedFile);
-            evaluateAudioUserCase.execute(interviewId, convertedFile);
-
-
-        } catch (IOException e) {
-            e.printStackTrace();
-            // 적절한 예외 처리
-            throw new RuntimeException("파일 처리 중 오류 발생", e);
-        }
-
+        evaluateAudioUserCase.execute(interviewId, audioStorageUseCase.execute(audioFile));
 
         return SuccessResponse.empty();
     }
+
+//    @Operation(summary = "음성 평가 결과를 반환합니다.")
+//    @GetMapping
+//    public SuccessResponse<GazeEvaluationDto> evaluateGazeData(@PathVariable("interviewId") Long interviewId) {
+//        GazeEvaluationDto gazeEvaluation = getGazeEvaluationUseCase.execute(interviewId);
+//        return SuccessResponse.of(gazeEvaluation);
+//    }
 }
