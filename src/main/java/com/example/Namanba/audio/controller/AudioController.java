@@ -3,7 +3,6 @@ package com.example.Namanba.audio.controller;
 import com.example.Namanba.audio.usecase.AnalyzeAudioUseCase;
 import com.example.Namanba.audio.usecase.AudioStorageUseCase;
 import com.example.Namanba.audio.usecase.EvaluateAudioUserCase;
-import com.example.Namanba.audio.usecase.processor.AudioEvaluationProcessor;
 import com.example.Namanba.common.response.SuccessResponse;
 import com.example.Namanba.gaze.dto.response.GazeEvaluationDto;
 import io.swagger.v3.oas.annotations.Operation;
@@ -32,7 +31,6 @@ public class AudioController {
 
     private final EvaluateAudioUserCase evaluateAudioUserCase;
 
-    private final AudioEvaluationProcessor audioEvaluationProcessor;
 
     @Operation(summary = "면접자의 음성 데이터를 받아온 후 평가합니다.")
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)

@@ -24,8 +24,6 @@ public class SilenceDurationProcessor {
 
     private final EvaluationContentRepository evaluationContentRepository;
 
-    private final EvaluationDomainService evaluationDomainService;
-
     // 오디오 파일을 처리하는 메서드
     public AudioEvaluationDto processAudio(File audioFile) {
         try {
@@ -39,7 +37,7 @@ public class SilenceDurationProcessor {
             int score = (int) resultMap.get("score");
             String message = (String) resultMap.get("message");
 
-            return AudioEvaluationDto.of(score, message);
+            return AudioEvaluationDto.ofSilenceDuration(score,message);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -48,9 +46,6 @@ public class SilenceDurationProcessor {
         return null;
     }
 
-
-    // 전체 시간과 침묵 시간 비율을 계산하는 메서드
-    // 전체 시간과 침묵 시간 비율을 계산하고 Map으로 반환하는 메서드
     private Map<String, Object> calculateSilenceRatio(AudioDispatcher dispatcher) {
         final double[] totalDuration = {0};
         final double[] silenceDuration = {0};

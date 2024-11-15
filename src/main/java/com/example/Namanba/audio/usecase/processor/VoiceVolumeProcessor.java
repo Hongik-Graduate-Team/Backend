@@ -20,13 +20,20 @@ import java.util.*;
 @Processor
 @RequiredArgsConstructor
 public class VoiceVolumeProcessor {
+
+    private final EvaluationContentRepository evaluationContentRepository;
     public AudioEvaluationDto processAudio(File audioFile) {
         try {
             // 오디오 스트림을 생성하여 처리할 준비
             AudioDispatcher dispatcher = AudioDispatcherFactory.fromPipe(audioFile.getAbsolutePath(), 44100, 1024, 512);
 
             // 평균 목소리 크키 반환
-            calculateAverageDecibel(audioFile);
+            Map<String, Object> resultMap = calculateAverageDecibel(audioFile);
+
+            int score = (int) resultMap.get("score");
+            String message = (String) resultMap.get("message");
+
+            return AudioEvaluationDto.ofVoiceVolume(score,message);
 
 
         } catch (Exception e) {
@@ -36,7 +43,7 @@ public class VoiceVolumeProcessor {
         return null; // 예외 발생 시 null 반환 (예외 처리를 추가할 수 있습니다)
     }
 
-    public double calculateAverageDecibel(File audioFile) throws UnsupportedAudioFileException, IOException {
+    public Map<String, Object> calculateAverageDecibel(File audioFile) throws UnsupportedAudioFileException, IOException {
         AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(audioFile);
         AudioFormat format = audioInputStream.getFormat();
         long frameLength = audioInputStream.getFrameLength();
@@ -67,7 +74,17 @@ public class VoiceVolumeProcessor {
 
         System.out.println("목소리크기: "+volume);
 
-        return volume; // 카운트가 0이면 0 반환
+        int score = calculateScore(volume);
+        String message = createFeedback(score);
+
+        System.out.println("목소리 피드백: "+ message);
+
+        // 결과를 Map으로 반환
+        Map<String, Object> result = new HashMap<>();
+        result.put("score", score);
+        result.put("message", message);
+
+        return result; // 카운트가 0이면 0 반환
     }
 
     private double calculateRMS(byte[] buffer, AudioFormat format) {
@@ -85,5 +102,32 @@ public class VoiceVolumeProcessor {
         }
 
         return Math.sqrt(sum / (buffer.length / sampleSizeInBytes));
+    }
+
+    private int calculateScore(double volume) {
+        if (volume >= -5) {
+            return 3;
+        } else if (volume >= -25) {
+            return 5;
+        } else {
+            return 1;
+        }
+    }
+
+    private String createFeedback(int score){
+        String criteria;
+        if(score>=4){
+            criteria = "Excellent";
+        }
+        else if (score>=2){
+            criteria = "Fair";
+        }
+        else{
+            criteria = "Poor";
+        }
+
+        String feedback  = evaluationContentRepository.findByCategoryAndCriteria(Category.VOICEVOLUME, criteria).getMessage();
+
+        return feedback;
     }
 }
