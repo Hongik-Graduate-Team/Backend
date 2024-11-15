@@ -3,6 +3,7 @@ package com.example.Namanba.audio.controller;
 import com.example.Namanba.audio.usecase.AnalyzeAudioUseCase;
 import com.example.Namanba.audio.usecase.AudioStorageUseCase;
 import com.example.Namanba.audio.usecase.EvaluateAudioUserCase;
+import com.example.Namanba.audio.usecase.processor.SpeechRateProcessor;
 import com.example.Namanba.common.response.SuccessResponse;
 import com.example.Namanba.gaze.dto.response.GazeEvaluationDto;
 import io.swagger.v3.oas.annotations.Operation;
@@ -29,6 +30,8 @@ public class AudioController {
     private final AudioStorageUseCase audioStorageUseCase;
     private final AnalyzeAudioUseCase analyzeAudioUseCase;
 
+    private final SpeechRateProcessor speechRateProcessor;
+
     private final EvaluateAudioUserCase evaluateAudioUserCase;
 
 
@@ -45,8 +48,12 @@ public class AudioController {
             )
             @RequestParam("audio") MultipartFile audioFile,
             @PathVariable("interviewId") Long interviewId
-    ) {
+    ) throws IOException {
         analyzeAudioUseCase.execute(audioFile);
+
+        String text = speechRateProcessor.transcribe(audioFile);
+
+        System.out.println("<<<<<<<<텍스트 : "+text);
 
         evaluateAudioUserCase.execute(interviewId, audioStorageUseCase.execute(audioFile));
 
