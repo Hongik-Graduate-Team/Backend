@@ -1,5 +1,6 @@
 package com.example.Namanba.portfolio.entity;
 
+import com.example.Namanba.common.entity.BaseTimeEntity;
 import com.example.Namanba.portfolio.entity.subitems.Position;
 import com.example.Namanba.user.entity.User;
 import jakarta.persistence.*;
@@ -13,7 +14,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Portfolio {
+public class Portfolio extends BaseTimeEntity {
 
     @Id
     @Column(name = "portfolio_id")
