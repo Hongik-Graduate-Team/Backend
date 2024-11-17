@@ -32,7 +32,6 @@ public class GestureEvaluationProcessor {
     private Map<CategoryDetails, GestureScore> evaluateGestureDetails(GestureDataDto gestureData) {
         return Map.of(
                 CategoryDetails.HEAD_TOUCH, getScoreByCriteria(GestureCriteria.HEAD_TOUCH, gestureData.getHeadTouch()),
-                CategoryDetails.FACE_TOUCH, getScoreByCriteria(GestureCriteria.FACE_TOUCH, gestureData.getFaceTouch()),
                 CategoryDetails.ARM_TOUCH, getScoreByCriteria(GestureCriteria.ARM_TOUCH, gestureData.getExcessiveArmMovement()),
                 CategoryDetails.HEAD_MOVEMENT, getScoreByCriteria(GestureCriteria.HEAD_MOVEMENT, gestureData.getHeadMovement()),
                 CategoryDetails.BODY_MOVEMENT, getScoreByCriteria(GestureCriteria.BODY_MOVEMENT, gestureData.getExcessiveBodyMovement())

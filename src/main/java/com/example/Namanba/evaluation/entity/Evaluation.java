@@ -1,8 +1,12 @@
 package com.example.Namanba.evaluation.entity;
 
 import com.example.Namanba.Interview.entity.Interview;
+import com.example.Namanba.common.entity.BaseTimeEntity;
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Builder
@@ -10,7 +14,7 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
-public class Evaluation {
+public class Evaluation extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "evaluation_id")
@@ -45,17 +49,17 @@ public class Evaluation {
     @JoinColumn(name = "interview_id", unique = true)
     private Interview interview;
 
-    public void assignGesture(double gesture, String gestureMessage){
+    public void assignGesture(double gesture, String gestureMessage) {
         this.gesture = gesture;
         this.gestureMessage = gestureMessage;
     }
 
-    public void assignGaze(double gaze, String gazeMessage){
+    public void assignGaze(double gaze, String gazeMessage) {
         this.gaze = gaze;
         this.gazeMessage = gazeMessage;
     }
 
-    public void assignExpression(double expression, String expressionMessage){
+    public void assignExpression(double expression, String expressionMessage) {
         this.expression = expression;
         this.expressionMessage = expressionMessage;
     }

@@ -1,5 +1,6 @@
 package com.example.Namanba.Interview.entity;
 
+import com.example.Namanba.common.entity.BaseTimeEntity;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -9,7 +10,7 @@ import lombok.*;
 @Getter
 @AllArgsConstructor
 @Table(name = "custom_question")
-public class CustomQuestion {
+public class CustomQuestion extends BaseTimeEntity {
 
     @Id
     @Column(name = "customQuestion_id")
