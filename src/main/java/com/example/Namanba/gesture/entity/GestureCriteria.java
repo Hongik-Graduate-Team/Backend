@@ -6,11 +6,10 @@ import lombok.Getter;
 @AllArgsConstructor
 @Getter
 public enum GestureCriteria {
-    HEAD_TOUCH(4, 2, 1),
-    FACE_TOUCH(4, 2, 1),
-    ARM_TOUCH(4, 3, 2),
-    HEAD_MOVEMENT(4, 3, 2),
-    BODY_MOVEMENT(4, 2, 1);
+    HEAD_TOUCH(21, 20, 10),
+    ARM_TOUCH(21, 20, 10),
+    HEAD_MOVEMENT(21, 20, 10),
+    BODY_MOVEMENT(11, 10, 5);
 
     private final int poorCount;
     private final int fairCount;
