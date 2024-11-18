@@ -69,4 +69,9 @@ public class Evaluation {
         this.voiceVolume = voiceVolume;
         this.voiceVolumeMessage = voiceVolumeMessage;
     }
+
+    public void assignSpeechRate(double speechRate, String speechRateMessage){
+        this.speechRate = speechRate;
+        this.speechRateMessage = speechRateMessage;
+    }
 }
