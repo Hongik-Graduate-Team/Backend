@@ -1,23 +1,21 @@
 package com.example.Namanba.Interview.adaptor;
 
-import com.example.Namanba.Interview.entity.BasicQuestion;
 import com.example.Namanba.Interview.entity.Interview;
 import com.example.Namanba.Interview.exception.InterviewErrorCode;
 import com.example.Namanba.Interview.repository.InterviewRepository;
 import com.example.Namanba.common.annotation.Adaptor;
 import com.example.Namanba.common.exception.base.BaseException;
-import com.example.Namanba.portfolio.entity.Portfolio;
-import com.example.Namanba.portfolio.entity.subitems.Position;
 import com.example.Namanba.user.entity.User;
-import jakarta.persistence.*;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 
-import java.util.List;
 
 @Adaptor
 @RequiredArgsConstructor
 public class InterviewAdaptor {
     private final InterviewRepository interviewRepository;
+
 
     public boolean existsByInterview(Long interviewId){
         return interviewRepository.existsByInterviewId(interviewId);
@@ -26,6 +24,17 @@ public class InterviewAdaptor {
         return interviewRepository.findById(interviewId)
                 .orElseThrow(() -> new BaseException(InterviewErrorCode.INTERVIEW_NOT_FOUND));
     }
+
+    public Interview findByInterviewIdAndUser(Long interviewId, User user) {
+        return interviewRepository.findByInterviewIdAndUser(interviewId, user)
+                .orElseThrow(() -> new BaseException(InterviewErrorCode.INTERVIEW_ACCESS_DENIED));
+    }
+
+    // User 객체로 인터뷰 목록 조회 (페이징)
+    public Page<Interview> findWithCustomQuestionsByUser(User user, PageRequest pageRequest) {
+        return interviewRepository.findWithCustomQuestionsByUser(user, pageRequest);
+    }
+
     public Interview save(Interview interview) {
         return interviewRepository.save(interview);
     }

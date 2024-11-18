@@ -4,11 +4,10 @@ import com.example.Namanba.Interview.adaptor.BasicQuestionAdaptor;
 import com.example.Namanba.Interview.adaptor.CustomQuestionAdaptor;
 import com.example.Namanba.Interview.adaptor.InterviewAdaptor;
 import com.example.Namanba.Interview.converter.InterviewConverter;
-import com.example.Namanba.Interview.dto.InterviewDto;
+import com.example.Namanba.Interview.dto.response.InterviewDto;
 import com.example.Namanba.Interview.entity.BasicQuestion;
 import com.example.Namanba.Interview.entity.CustomQuestion;
 import com.example.Namanba.Interview.entity.Interview;
-import com.example.Namanba.Interview.repository.InterviewRepository;
 import com.example.Namanba.Interview.service.processor.GenerateCustomQuestionsProcessor;
 import com.example.Namanba.evaluation.service.EvaluationDomainService;
 import com.example.Namanba.portfolio.adaptor.PortfolioAdaptor;
@@ -17,6 +16,7 @@ import com.example.Namanba.portfolio.entity.Portfolio;
 import com.example.Namanba.portfolio.entity.subitems.Position;
 import com.example.Namanba.user.entity.User;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -24,7 +24,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
-
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class InterviewService {
@@ -34,7 +34,6 @@ public class InterviewService {
     private final BasicQuestionAdaptor basicQuestionAdaptor;
     private final InterviewAdaptor interviewAdaptor;
     private final GenerateCustomQuestionsProcessor generateCustomQuestionsProcessor;
-    private final InterviewRepository interviewRepository;
     private final EvaluationDomainService evaluationDomainService;
 
 
@@ -50,7 +49,7 @@ public class InterviewService {
         return InterviewConverter.toInterviewDto(interview, customQuestionList);
     }
 
-    public List<String> ShowcustomQuestions(Long interviewId){
+    public List<String> ShowcustomQuestions(Long interviewId) {
         Interview interview = interviewAdaptor.findByInterviewId(interviewId);
         CustomQuestion customQuestion = customQuestionAdaptor.findByInterview(interview);
         List<String> questions = extractQuestions(customQuestion.getCustomQuestions());
@@ -72,6 +71,7 @@ public class InterviewService {
 
         return questions;
     }
+
     private Interview setupInterviewBase(Portfolio portfolio, String interviewTitle) {
         List<String> basicQuestionList = getBasicQuestionsByRandom(portfolio.getPosition().getPositionName());
         Interview interview = InterviewConverter.toInterview(portfolio, interviewTitle, basicQuestionList);

@@ -1,6 +1,6 @@
 package com.example.Namanba.Interview.converter;
 
-import com.example.Namanba.Interview.dto.InterviewDto;
+import com.example.Namanba.Interview.dto.response.InterviewDto;
 import com.example.Namanba.Interview.entity.CustomQuestion;
 import com.example.Namanba.Interview.entity.Interview;
 import com.example.Namanba.portfolio.entity.Portfolio;
@@ -19,6 +19,7 @@ public class InterviewConverter {
                 .basicInterview2(basicQuestionList.get(1))
                 .basicInterview3(basicQuestionList.get(2))
                 .user(portfolio.getUser())
+                .positionName(portfolio.getPosition().getPositionName())
                 .portfolio(portfolio)
                 .build();
     }
