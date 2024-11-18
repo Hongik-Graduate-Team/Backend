@@ -51,9 +51,7 @@ public class AudioController {
     ) throws IOException {
         analyzeAudioUseCase.execute(audioFile);
 
-        String text = speechRateProcessor.transcribe(audioFile);
-
-        System.out.println("<<<<<<<<텍스트 : "+text);
+        speechRateProcessor.calculateSpeechRate(audioStorageUseCase.execute(audioFile));
 
         evaluateAudioUserCase.execute(interviewId, audioStorageUseCase.execute(audioFile));
 
