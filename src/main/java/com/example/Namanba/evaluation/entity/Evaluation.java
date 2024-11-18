@@ -85,4 +85,9 @@ public class Evaluation extends BaseTimeEntity {
         this.voiceVolumeMessage = voiceVolumeMessage;
         this.success++;
     }
+
+    public void assignSpeechRate(double speechRate, String speechRateMessage){
+        this.speechRate = speechRate;
+        this.speechRateMessage = speechRateMessage;
+    }
 }

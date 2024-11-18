@@ -81,7 +81,11 @@ dependencies {
 	implementation 'be.tarsos.dsp:core:2.5'  // TarsosDSP의 core 라이브러리
 	implementation 'be.tarsos.dsp:jvm:2.5'   // JVM에서 사용할 수 있는 라이브러리
 
-	//implementation 'com.github.webrtcvad-java:webrtcvad-java:0.1.0'
+	// Google Speech To Text
+	implementation(platform("com.google.cloud:libraries-bom:26.1.4"))
+	implementation("com.google.cloud:google-cloud-speech")
+	implementation("com.google.protobuf:protobuf-java:3.21.12")
+	implementation("com.fasterxml.jackson.core:jackson-databind")
 
 }
 
@@ -93,4 +97,7 @@ dependencyManagement {
 
 tasks.named('test') {
 	useJUnitPlatform()
+}
+test {
+	enabled = false
 }

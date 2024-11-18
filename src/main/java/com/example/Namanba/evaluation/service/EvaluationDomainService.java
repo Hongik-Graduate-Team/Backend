@@ -75,6 +75,14 @@ public class EvaluationDomainService {
     }
 
     @Transactional
+    public void evaluateSpeechRate(Interview interview, AudioEvaluationDto audioEvaluationDto){
+        Evaluation evaluation = evaluationAdaptor.findByInterview(interview);
+        evaluation.assignSpeechRate(audioEvaluationDto.getSpeechRate(), audioEvaluationDto.getSpeechRateMessage());
+        evaluationAdaptor.save(evaluation);
+
+    }
+
+    @Transactional
     public void evaluateExpression(Interview interview, ExpressionEvaluationDto expressionEvaluationDto){
         Evaluation evaluation = evaluationAdaptor.findByInterview(interview);
         // expression 값을 검증하고 기본값 설정

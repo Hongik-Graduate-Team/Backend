@@ -142,24 +142,4 @@ public class SilenceDurationProcessor {
         return feedback;
     }
 
-
-
-    // 발화 속도 계산 메서드 (분당 단어 수)
-    /*
-        private double calculateSpeechRate(AudioDispatcher dispatcher) {
-        final int[] wordCount = {0};
-        final double[] duration = {0};
-
-        dispatcher.addAudioProcessor(new PitchProcessor(PitchProcessor.PitchEstimationAlgorithm.YIN, 44100, 1024, (pitchDetectionResult, audioEvent) -> {
-            if (pitchDetectionResult.getPitch() != -1) {
-                wordCount[0]++;
-                duration[0] += audioEvent.getTimeStamp();
-            }
-        }));
-
-        dispatcher.run();  // 발화 속도를 계산
-        return (wordCount[0] / (duration[0] / 60));  // 분당 단어 수 (WPM)
-    }
-    */
-
 }
