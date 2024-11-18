@@ -8,6 +8,8 @@ import com.example.Namanba.evaluation.exception.EvaluationErrorCode;
 import com.example.Namanba.evaluation.repository.EvaluationRepository;
 import lombok.RequiredArgsConstructor;
 
+import java.util.Optional;
+
 @Adaptor
 @RequiredArgsConstructor
 public class EvaluationAdaptor {
@@ -18,6 +20,9 @@ public class EvaluationAdaptor {
     public Evaluation findByInterview(Interview interview) {
         return evaluationRepository.findWithLockByInterviewId(interview.getInterviewId())
                 .orElseThrow(() -> new BaseException(EvaluationErrorCode.EVALUATION_NOT_FOUND));
+    }
+    public Optional<Evaluation> findByOptionalInterview(Interview interview) {
+        return evaluationRepository.findWithLockByInterviewId(interview.getInterviewId());
     }
 
 }

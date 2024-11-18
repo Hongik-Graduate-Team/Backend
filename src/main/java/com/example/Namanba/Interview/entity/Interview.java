@@ -2,6 +2,7 @@ package com.example.Namanba.Interview.entity;
 
 import com.example.Namanba.common.entity.BaseTimeEntity;
 import com.example.Namanba.portfolio.entity.Portfolio;
+import com.example.Namanba.portfolio.entity.subitems.Position;
 import com.example.Namanba.user.entity.User;
 import jakarta.persistence.*;
 import lombok.*;
@@ -29,6 +30,8 @@ public class Interview extends BaseTimeEntity {
     private String basicInterview2;
 
     private String basicInterview3;
+
+    private String positionName;
 
     @ManyToOne
     @JoinColumn(name = "user_id")

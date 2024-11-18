@@ -17,8 +17,7 @@ import lombok.NoArgsConstructor;
 public class Portfolio extends BaseTimeEntity {
 
     @Id
-    @Column(name = "portfolio_id")
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long portfolioId;
 
     @OneToOne

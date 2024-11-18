@@ -1,6 +1,6 @@
 package com.example.Namanba.Interview.controller;
 
-import com.example.Namanba.Interview.dto.InterviewDto;
+import com.example.Namanba.Interview.dto.response.InterviewDto;
 import com.example.Namanba.Interview.service.InterviewService;
 import com.example.Namanba.common.response.SuccessResponse;
 import com.example.Namanba.common.util.JwtUtil;
@@ -27,11 +27,4 @@ public class InterviewController {
         User user = jwtUtil.getUserByToken(httpRequest);
         return SuccessResponse.of(interviewService.execute(interviewTitle, user));
     }
-
-    @Operation(summary = "사용자 맞춤 생성형 면접 질문이 반환됩니다. [프론트엔드 테스트용]")
-    @GetMapping("/custom")
-    public SuccessResponse<List<String>> getCustoms(@RequestParam Long interviewId){
-        return SuccessResponse.of(interviewService.ShowcustomQuestions(interviewId));
-    }
-
 }

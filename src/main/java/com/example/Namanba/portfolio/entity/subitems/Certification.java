@@ -18,7 +18,7 @@ public class Certification {
 
     @Id
     @Column(name = "cert_id")
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long certId;
 
     @Column(name = "type", nullable = false)

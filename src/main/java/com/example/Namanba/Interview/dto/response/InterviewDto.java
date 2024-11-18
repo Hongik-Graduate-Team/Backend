@@ -1,4 +1,4 @@
-package com.example.Namanba.Interview.dto;
+package com.example.Namanba.Interview.dto.response;
 
 import lombok.Builder;
 import lombok.Getter;
