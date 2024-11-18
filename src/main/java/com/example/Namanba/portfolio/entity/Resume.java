@@ -15,7 +15,7 @@ public class Resume {
 
     @Id
     @Column(name = "resume_id")
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long resumeId;
 
     @Column(name = "question_num", nullable = false)

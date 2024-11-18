@@ -16,7 +16,7 @@ public class Stack {
 
     @Id
     @Column(name = "stack_id")
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long stackId;
 
     @Column(name = "language", nullable = false)

@@ -17,7 +17,7 @@ import java.time.LocalDate;
 public class LanguageCert {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "languagecert_id")
     private Long languageCertId;
 

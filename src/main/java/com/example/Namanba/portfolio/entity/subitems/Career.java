@@ -18,7 +18,7 @@ public class Career {
 
     @Id
     @Column(name = "career_id")
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long careerId;
 
     @Column(name = "type", nullable = false)

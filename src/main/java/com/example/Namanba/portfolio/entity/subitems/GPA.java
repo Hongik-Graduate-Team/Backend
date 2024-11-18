@@ -16,7 +16,7 @@ public class GPA {
 
     @Id
     @Column(name = "gpa_id")
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long gpaId;
 
     @Column(name = "score", nullable = false)

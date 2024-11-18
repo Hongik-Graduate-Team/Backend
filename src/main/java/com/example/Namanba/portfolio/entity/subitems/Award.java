@@ -16,7 +16,7 @@ public class Award {
 
     @Id
     @Column(name = "award_id")
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long awardId;
 
     @Column(name = "type", nullable = false)
