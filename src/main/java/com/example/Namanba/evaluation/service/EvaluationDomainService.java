@@ -61,6 +61,19 @@ public class EvaluationDomainService {
     }
 
     @Transactional
+    public AudioEvaluationDto getAudioEvaluation(Interview interview){
+        Evaluation evaluation = evaluationAdaptor.findByInterview(interview);
+        return AudioEvaluationDto.builder()
+                .speechRate(evaluation.getSpeechRate())
+                .speechRateMessage(evaluation.getSpeechRateMessage())
+                .silenceDuration(evaluation.getSilenceDuration())
+                .silenceDurationMessage(evaluation.getSilenceDurationMessage())
+                .voiceVolume(evaluation.getVoiceVolume())
+                .voiceVolumeMessage(evaluation.getVoiceVolumeMessage())
+                .build();
+    }
+
+    @Transactional
     public void evaluateSilenceDuration(Interview interview, AudioEvaluationDto audioEvaluationDto){
         Evaluation evaluation = evaluationAdaptor.findByInterview(interview);
         evaluation.assignSilenceDuration(audioEvaluationDto.getSilenceDuration(), audioEvaluationDto.getSilenceDurationMessage());

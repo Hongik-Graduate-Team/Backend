@@ -1,8 +1,10 @@
 package com.example.Namanba.audio.controller;
 
+import com.example.Namanba.audio.dto.response.AudioEvaluationDto;
 import com.example.Namanba.audio.usecase.AnalyzeAudioUseCase;
 import com.example.Namanba.audio.usecase.AudioStorageUseCase;
 import com.example.Namanba.audio.usecase.EvaluateAudioUserCase;
+import com.example.Namanba.audio.usecase.GetAudioEvaluationUseCase;
 import com.example.Namanba.audio.usecase.processor.SpeechRateProcessor;
 import com.example.Namanba.common.response.SuccessResponse;
 import com.example.Namanba.gaze.dto.response.GazeEvaluationDto;
@@ -34,6 +36,8 @@ public class AudioController {
 
     private final EvaluateAudioUserCase evaluateAudioUserCase;
 
+    private final GetAudioEvaluationUseCase getAudioEvaluationUseCase;
+
 
     @Operation(summary = "면접자의 음성 데이터를 받아온 후 평가합니다.")
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -58,10 +62,10 @@ public class AudioController {
         return SuccessResponse.empty();
     }
 
-//    @Operation(summary = "음성 평가 결과를 반환합니다.")
-//    @GetMapping
-//    public SuccessResponse<GazeEvaluationDto> evaluateGazeData(@PathVariable("interviewId") Long interviewId) {
-//        GazeEvaluationDto gazeEvaluation = getGazeEvaluationUseCase.execute(interviewId);
-//        return SuccessResponse.of(gazeEvaluation);
-//    }
+    @Operation(summary = "음성 평가 결과를 반환합니다.")
+    @GetMapping
+    public SuccessResponse<AudioEvaluationDto> evaluateAudioData(@PathVariable("interviewId") Long interviewId) {
+        AudioEvaluationDto audioEvaluation = getAudioEvaluationUseCase.execute(interviewId);
+        return SuccessResponse.of(audioEvaluation);
+    }
 }

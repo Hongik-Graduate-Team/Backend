@@ -12,10 +12,7 @@ import com.example.Namanba.evaluation.repository.EvaluationContentRepository;
 import com.example.Namanba.evaluation.service.EvaluationDomainService;
 import lombok.RequiredArgsConstructor;
 
-import javax.sound.sampled.AudioFormat;
-import javax.sound.sampled.AudioInputStream;
-import javax.sound.sampled.AudioSystem;
-import javax.sound.sampled.UnsupportedAudioFileException;
+import javax.sound.sampled.*;
 import java.io.*;
 import java.util.*;
 import com.google.cloud.speech.v1.*;
@@ -118,5 +115,50 @@ public class SpeechRateProcessor {
 
         return feedback;
     }
+
+//    private final Logger logger = LoggerFactory.getLogger(SpeechRateProcessor.class);
+//
+//    public String transcribe(MultipartFile audioFile) throws IOException {
+//        if (audioFile.isEmpty()) {
+//            throw new IOException("Required part 'audioFile' is not present.");
+//        }
+//
+//        // 오디오 파일을 byte array로 decode
+//        byte[] audioBytes = audioFile.getBytes();
+//
+//        // 클라이언트 인스턴스화
+//        try (SpeechClient speechClient = SpeechClient.create()) {
+//            // 오디오 객체 생성
+//            ByteString audioData = ByteString.copyFrom(audioBytes);
+//            RecognitionAudio recognitionAudio = RecognitionAudio.newBuilder()
+//                    .setContent(audioData)
+//                    .build();
+//
+//            // 설정 객체 생성
+//            RecognitionConfig recognitionConfig =
+//                    RecognitionConfig.newBuilder()
+//                            .setEncoding(RecognitionConfig.AudioEncoding.LINEAR16)  // LINEAR16으로 설정
+//                            .setSampleRateHertz(48000)  // WAV 파일의 샘플링 속도와 맞추세요.
+//                            .setLanguageCode("ko-KR")
+//                            .build();
+//
+//            // 오디오-텍스트 변환 수행
+//            RecognizeResponse response = speechClient.recognize(recognitionConfig, recognitionAudio);
+//            List<SpeechRecognitionResult> results = response.getResultsList();
+//
+//            if (!results.isEmpty()) {
+//                // 주어진 말 뭉치에 대해 여러 가능한 스크립트를 제공. 0번(가장 가능성 있는)을 사용한다.
+//                SpeechRecognitionResult result = results.get(0);
+//                return result.getAlternatives(0).getTranscript();
+//            } else {
+//                logger.error("No transcription result found");
+//                return "";
+//            }
+//        } catch (Exception e) {
+//            throw new RuntimeException(e);
+//        }
+//    }
+
+
 
 }

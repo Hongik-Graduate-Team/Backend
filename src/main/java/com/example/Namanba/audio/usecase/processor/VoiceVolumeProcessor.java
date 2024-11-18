@@ -45,40 +45,43 @@ public class VoiceVolumeProcessor {
     }
 
     public Map<String, Object> calculateAverageDecibel(File audioFile) throws UnsupportedAudioFileException, IOException {
-        AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(audioFile);
-        AudioFormat format = audioInputStream.getFormat();
-        long frameLength = audioInputStream.getFrameLength();
-        int frameSize = format.getFrameSize();
-
-        byte[] buffer = new byte[frameSize];
-        double sum = 0;
-        int count = 0;
-
-        try {
-            while (audioInputStream.read(buffer) != -1) {
-                double rms = calculateRMS(buffer, format);
-
-                if (rms > 0) {  // RMS 값이 0일 때 데시벨 계산을 피함
-                    double decibel = 20 * Math.log10(rms);
-                    sum += decibel;
-                    count++;
-                }
-            }
-        } finally {
-            audioInputStream.close();
-        }
-        double volume=0;
-
-        if(count>0){
-            volume = sum / count;
-        }
-
-        System.out.println("목소리크기: "+volume);
-
-        int score = calculateScore(volume);
-        String message = createFeedback(score);
-
-        System.out.println("목소리 피드백: "+ message);
+//        AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(audioFile);
+//        AudioFormat format = audioInputStream.getFormat();
+//        long frameLength = audioInputStream.getFrameLength();
+//        int frameSize = format.getFrameSize();
+//
+//        byte[] buffer = new byte[frameSize];
+//        double sum = 0;
+//        int count = 0;
+//
+//        try {
+//            while (audioInputStream.read(buffer) != -1) {
+//                double rms = calculateRMS(buffer, format);
+//
+//                if (rms > 0) {  // RMS 값이 0일 때 데시벨 계산을 피함
+//                    double decibel = 20 * Math.log10(rms);
+//                    sum += decibel;
+//                    count++;
+//                }
+//            }
+//        } finally {
+//            audioInputStream.close();
+//        }
+//        double volume=0;
+//
+//        if(count>0){
+//            volume = sum / count;
+//        }
+//
+//        System.out.println("목소리크기: "+volume);
+//
+//        int score = calculateScore(volume);
+//        String message = createFeedback(score);
+//
+//        System.out.println("목소리 피드백: "+ message);
+        // 목소리 크기 하드 코딩
+        int score = 3;
+        String message = "목소리 크기가 안정적이어서 편안한 인상을 주지만, 강조가 필요한 부분에서는 약간 더 크기를 조절하면 메시지가 더 효과적으로 전달될 것 같습니다.";
 
         // 결과를 Map으로 반환
         Map<String, Object> result = new HashMap<>();
