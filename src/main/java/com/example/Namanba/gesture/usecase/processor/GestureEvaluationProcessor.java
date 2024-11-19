@@ -16,7 +16,7 @@ import java.util.stream.Collectors;
 @Processor
 @RequiredArgsConstructor
 public class GestureEvaluationProcessor {
-    private EvaluationContentAdaptor evaluationContentAdaptor;
+    private final EvaluationContentAdaptor evaluationContentAdaptor;
     public GestureEvaluationDto evaluateGesture(GestureDataDto gestureData) {
         Map<CategoryDetails, GestureScore> evaluationResults = evaluateGestureDetails(gestureData);
 
@@ -44,7 +44,7 @@ public class GestureEvaluationProcessor {
                 .map(entry -> {
                     CategoryDetails categoryDetails = entry.getKey();
                     GestureScore gestureScore = entry.getValue();
-                    return "- " + evaluationContentAdaptor.fetchMessageByCriteria(Category.GESTURE,categoryDetails, gestureScore.name());
+                    return evaluationContentAdaptor.fetchMessageByCriteria(Category.GESTURE, categoryDetails, gestureScore.name());
                 })
                 .collect(Collectors.joining("\n"));
     }

@@ -9,10 +9,12 @@ import com.example.Namanba.user.entity.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.transaction.annotation.Transactional;
 
 
 @Adaptor
 @RequiredArgsConstructor
+@Transactional(readOnly = true) // 읽기 전용 트랜잭션
 public class InterviewAdaptor {
     private final InterviewRepository interviewRepository;
 
@@ -35,6 +37,7 @@ public class InterviewAdaptor {
         return interviewRepository.findWithCustomQuestionsByUser(user, pageRequest);
     }
 
+    @Transactional
     public Interview save(Interview interview) {
         return interviewRepository.save(interview);
     }
