@@ -29,6 +29,7 @@ public class EvaluationDomainService {
         } else throw new BaseException(InterviewErrorCode.INTERVIEW_NOT_FOUND);
     }
     @Transactional
+
     public void evaluateGesture(Interview interview, GestureEvaluationDto gestureEvaluation){
         Evaluation evaluation = evaluationAdaptor.findByInterview(interview);
         evaluation.assignGesture(gestureEvaluation.getGesture(), gestureEvaluation.getGestureMessage());
