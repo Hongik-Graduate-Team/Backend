@@ -44,7 +44,7 @@ public class GestureEvaluationProcessor {
                 .map(entry -> {
                     CategoryDetails categoryDetails = entry.getKey();
                     GestureScore gestureScore = entry.getValue();
-                    return "- " + evaluationContentAdaptor.fetchMessageByCriteria(Category.GESTURE, categoryDetails, gestureScore.name());
+                    return evaluationContentAdaptor.fetchMessageByCriteria(Category.GESTURE, categoryDetails, gestureScore.name());
                 })
                 .collect(Collectors.joining("\n"));
     }
