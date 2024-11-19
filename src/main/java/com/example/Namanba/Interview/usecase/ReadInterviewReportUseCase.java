@@ -12,9 +12,11 @@ import com.example.Namanba.evaluation.entity.Evaluation;
 import com.example.Namanba.user.entity.User;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+import org.springframework.transaction.annotation.Transactional;
 
 @UseCase
 @RequiredArgsConstructor
+@Transactional(readOnly = true) // 읽기 전용 트랜잭션
 public class ReadInterviewReportUseCase {
     private final InterviewAdaptor interviewAdaptor;
     private final EvaluationAdaptor evaluationAdaptor;
