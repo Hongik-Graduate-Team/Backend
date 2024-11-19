@@ -21,14 +21,14 @@ public class GestureController {
 
     @Operation(summary = "면접자의 자세 데이터를 받아온 후 평가합니다.")
     @PostMapping
-    public SuccessResponse<Void> receiveGestureData(@RequestBody GestureDataDto gestureData, @PathVariable("interviewid") Long interviewId) {
+    public SuccessResponse<Void> receiveGestureData(@RequestBody GestureDataDto gestureData, @PathVariable("interviewId") Long interviewId) {
         evaluateGestureUseCase.execute(interviewId, gestureData);
         return SuccessResponse.empty();
     }
 
     @Operation(summary = "자세 평가 결과를 반환합니다.")
     @GetMapping
-    public SuccessResponse<GestureEvaluationDto> evaluateGestureData(@PathVariable("interviewid") Long interviewId) {
+    public SuccessResponse<GestureEvaluationDto> evaluateGestureData(@PathVariable("interviewId") Long interviewId) {
         GestureEvaluationDto gestureEvaluation = getGestureEvaluationUseCase.execute(interviewId);
         return SuccessResponse.of(gestureEvaluation);
     }
