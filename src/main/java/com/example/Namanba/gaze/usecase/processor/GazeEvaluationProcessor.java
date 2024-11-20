@@ -32,7 +32,7 @@ public class GazeEvaluationProcessor {
         String gazeDirectionMessage = fillGazeDirectionMessage(gazeDirectionBasicMessage, directionCounts);
 
         String gazeStabilityMessage =   evaluationContentAdaptor.fetchMessageByCriteria(Category.GAZE, CategoryDetails.GAZE_STABILITY, gazeStability.name());
-        return "- " + gazeDirectionMessage + "\n- " + gazeStabilityMessage;
+        return gazeDirectionMessage + "\n" + gazeStabilityMessage;
     }
 
     private String fillGazeDirectionMessage(String basicMessage, DirectionCounts directionCounts){
