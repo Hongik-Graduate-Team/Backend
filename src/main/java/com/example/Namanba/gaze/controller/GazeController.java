@@ -22,9 +22,19 @@ public class GazeController {
     @Operation(summary = "면접자의 시선 데이터를 받아온 후 평가합니다.")
     @PostMapping
     public SuccessResponse<Void> receiveGazeData(@RequestBody GazeDataDto gazeData, @PathVariable("interviewId") Long interviewId) {
-        System.out.println("GAZE 1");
-        System.out.println("시선 데이터 확인-------"+gazeData.getDirectionCounts()+"//////"+gazeData.getStabilityScore());
-        evaluateGazeUseCase.execute(interviewId, gazeData);
+        System.out.println("시선 데이터 평가 시작 - 인터뷰 ID: " + interviewId);
+        System.out.println("요청 데이터 확인 - directionCounts: " + gazeData.getDirectionCounts() + ", stabilityScore: " + gazeData.getStabilityScore());
+        try {
+            System.out.println("시선 데이터 처리 중...");
+            evaluateGazeUseCase.execute(interviewId, gazeData);
+            System.out.println("성공: 시선 데이터가 정상적으로 처리되었습니다. 인터뷰 ID: " + interviewId);
+        } catch (Exception e) {
+            System.out.println("오류 발생: 시선 데이터를 처리하는 중 예외가 발생했습니다. 인터뷰 ID: " + interviewId);
+            e.printStackTrace(); // 예외 상세 출력
+            throw e; // 예외 다시 던지기
+        }
+
+        System.out.println("시선 데이터 평가 종료 - 인터뷰 ID: " + interviewId);
         return SuccessResponse.empty();
     }
 
