@@ -54,7 +54,8 @@ public class SecurityConfig {
         return httpSecurity
                 .csrf(AbstractHttpConfigurer::disable)
                 .formLogin(AbstractHttpConfigurer::disable)
-                .cors(Customizer.withDefaults())
+                //.cors(Customizer.withDefaults())
+                .cors(http -> http.configurationSource(corsConfigurationSource()))
                 .sessionManagement((session) -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // jwt 사용하기 때문에 세션 비사용
                 .authorizeHttpRequests(authorize -> authorize
