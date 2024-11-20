@@ -26,8 +26,7 @@ public class ReadInterviewReportUseCase {
     public InterviewReportResponse execute(Long interviewId,  HttpServletRequest httpRequest) {
         User user = jwtUtil.getUserByToken(httpRequest);
         Interview interview = interviewAdaptor.findByInterviewIdAndUser(interviewId, user);
-        Evaluation evaluation = evaluationAdaptor.findByOptionalInterview(interview)
-                .orElse(null);
+        Evaluation evaluation = evaluationAdaptor.findWithoutLockByInterview(interview);
         CustomQuestion customQuestions = customQuestionAdaptor.findByInterview(interview);
         return InterviewReportResponse.of(interview, evaluation, customQuestions);
     }
