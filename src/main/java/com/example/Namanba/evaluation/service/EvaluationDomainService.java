@@ -37,7 +37,7 @@ public class EvaluationDomainService {
 
     @Transactional(readOnly = true)
     public GestureEvaluationDto getGestureEvaluation(Interview interview) {
-        Evaluation evaluation = evaluationAdaptor.findByInterview(interview);
+        Evaluation evaluation = evaluationAdaptor.findWithoutLockByInterview(interview);
         return GestureEvaluationDto.builder()
                 .gestureMessage(evaluation.getGestureMessage())
                 .gesture(evaluation.getGesture())
@@ -54,25 +54,25 @@ public class EvaluationDomainService {
 
     @Transactional(readOnly = true)
     public GazeEvaluationDto getGazeEvaluation(Interview interview){
-        Evaluation evaluation = evaluationAdaptor.findByInterview(interview);
+        Evaluation evaluation = evaluationAdaptor.findWithoutLockByInterview(interview);
         return GazeEvaluationDto.builder()
                 .gazeMessage(evaluation.getGazeMessage())
                 .gaze(evaluation.getGaze())
                 .build();
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     public ExpressionEvaluationDto getExpressionEvaluation(Interview interview){
-        Evaluation evaluation = evaluationAdaptor.findByInterview(interview);
+        Evaluation evaluation = evaluationAdaptor.findWithoutLockByInterview(interview);
         return ExpressionEvaluationDto.builder()
                 .expression(evaluation.getExpression())
                 .expressionMessage(evaluation.getExpressionMessage())
                 .build();
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     public AudioEvaluationDto getAudioEvaluation(Interview interview){
-        Evaluation evaluation = evaluationAdaptor.findByInterview(interview);
+        Evaluation evaluation = evaluationAdaptor.findWithoutLockByInterview(interview);
         return AudioEvaluationDto.builder()
                 .speechRate(evaluation.getSpeechRate())
                 .speechRateMessage(evaluation.getSpeechRateMessage())
