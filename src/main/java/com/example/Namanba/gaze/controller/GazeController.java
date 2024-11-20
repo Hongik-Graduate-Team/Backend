@@ -23,6 +23,7 @@ public class GazeController {
     @PostMapping
     public SuccessResponse<Void> receiveGazeData(@RequestBody GazeDataDto gazeData, @PathVariable("interviewId") Long interviewId) {
         System.out.println("GAZE 1");
+        System.out.println("시선 데이터 확인-------"+gazeData.getDirectionCounts()+"//////"+gazeData.getStabilityScore());
         evaluateGazeUseCase.execute(interviewId, gazeData);
         return SuccessResponse.empty();
     }

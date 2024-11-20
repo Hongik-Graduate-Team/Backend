@@ -25,6 +25,8 @@ public class ExpressionController {
             @PathVariable("interviewId") Long interviewId,
             @RequestBody ExpressionDataDto expressionDataDto){
         System.out.println("EXPRESSION 1");
+        System.out.println("표정 데이터 확인-----"+expressionDataDto.getNeutral()+"///"+expressionDataDto.getTotalFrames()+"///"
+                +expressionDataDto.getHappy()+"///"+expressionDataDto.getAngry()+"///"+expressionDataDto.getDisgusted());
         expressionService.evaluateExpression(interviewId, expressionDataDto);
         return SuccessResponse.empty();
     }
