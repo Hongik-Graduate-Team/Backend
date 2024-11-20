@@ -29,7 +29,7 @@ public class SecurityConfig {
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration config = new CorsConfiguration();
         config.setAllowedOriginPatterns(Arrays.asList("http://localhost:8080", "http://localhost:3000", "https://deploy-preview-15--namanbatest.netlify.app", "https://namanba.shop",
-                "https://main--namanbatest.netlify.app"));
+                "https://main--namanbatest.netlify.app","https://namanba.site"));
         config.addAllowedMethod("*");
         config.addAllowedHeader("*");
         config.setAllowCredentials(true);
