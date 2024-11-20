@@ -22,6 +22,8 @@ public class GestureController {
     @Operation(summary = "면접자의 자세 데이터를 받아온 후 평가합니다.")
     @PostMapping
     public SuccessResponse<Void> receiveGestureData(@RequestBody GestureDataDto gestureData, @PathVariable("interviewId") Long interviewId) {
+        System.out.println("자세 데이터 확인----"+gestureData.getExcessiveArmMovement()+"///"+gestureData.getExcessiveBodyMovement()
+        +"///"+gestureData.getHeadMovement()+"///"+gestureData.getHeadTouch());
         evaluateGestureUseCase.execute(interviewId, gestureData);
         return SuccessResponse.empty();
     }
