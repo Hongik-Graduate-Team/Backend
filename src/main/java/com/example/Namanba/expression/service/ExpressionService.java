@@ -26,6 +26,7 @@ public class ExpressionService {
     private final InterviewAdaptor interviewAdaptor;
 
     private final EvaluationContentRepository evaluationContentRepository;
+    private double sc;
 
 
     // 사용자의 면접 중 표정 비율을 계산하여 DB에 정보를 저장하는 함수
@@ -92,10 +93,10 @@ public class ExpressionService {
 
     private String createFeedback(int score){
         String criteria;
-        if(score>=4){
+        if(score >=4){
             criteria = "Excellent";
         }
-        else if (score>=2){
+        else if (score >=2){
             criteria = "Fair";
         }
         else{
@@ -109,19 +110,8 @@ public class ExpressionService {
 
 
     public ExpressionEvaluationDto createExpressionEvaluationDto(double score,String feedback ){
-        return ExpressionEvaluationDto.builder()
-                .expression(score)
-                .expressionMessage(feedback)
-                .build();
+        System.out.println("ExpressionEvaluationDto 생성");
+        return ExpressionEvaluationDto.of(score, feedback);
     }
 
-    @Transactional
-    public ExpressionEvaluationDto getExpressionEvaluationData(Long interviewId){
-        Interview interview = interviewAdaptor.findByInterviewId(interviewId);
-        Evaluation evaluation = evaluationAdaptor.findByInterview(interview);
-        return ExpressionEvaluationDto.builder()
-                .expressionMessage(evaluation.getExpressionMessage())
-                .expression(evaluation.getExpression())
-                .build();
-    }
 }

@@ -1,13 +1,12 @@
 package com.example.Namanba.user.entity;
 
 import com.example.Namanba.common.enums.LoginType;
+import com.example.Namanba.user.dto.UserProfileResponse;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import java.util.Date;
 
 @Entity
 @Getter
@@ -16,7 +15,7 @@ import java.util.Date;
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="user_id")
+    @Column(name = "user_id")
     private Long userId;
 
     @Column(nullable = false)
@@ -45,6 +44,12 @@ public class User {
         this.profileImageUrl = profileImageUrl;
         this.email = email;
         this.loginType = loginType;
+    }
+
+    public UserProfileResponse getUserProfile() {
+        return UserProfileResponse.builder()
+                .nickname(this.nickname)
+                .build();
     }
 
 }
