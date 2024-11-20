@@ -61,6 +61,15 @@ public class EvaluationDomainService {
     }
 
     @Transactional
+    public ExpressionEvaluationDto getExpressionEvaluation(Interview interview){
+        Evaluation evaluation = evaluationAdaptor.findByInterview(interview);
+        return ExpressionEvaluationDto.builder()
+                .expression(evaluation.getExpression())
+                .expressionMessage(evaluation.getExpressionMessage())
+                .build();
+    }
+
+    @Transactional
     public AudioEvaluationDto getAudioEvaluation(Interview interview){
         Evaluation evaluation = evaluationAdaptor.findByInterview(interview);
         return AudioEvaluationDto.builder()
