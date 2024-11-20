@@ -21,6 +21,7 @@ public class ExpressionController {
     public SuccessResponse<Void> evaluateExpression(
             @PathVariable("interviewId") Long interviewId,
             @RequestBody ExpressionDataDto expressionDataDto){
+        System.out.println("EXPRESSION 1");
         expressionService.evaluateExpression(interviewId, expressionDataDto);
         return SuccessResponse.empty();
     }

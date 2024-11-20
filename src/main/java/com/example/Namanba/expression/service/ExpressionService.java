@@ -30,6 +30,7 @@ public class ExpressionService {
 
     // 사용자의 면접 중 표정 비율을 계산하여 DB에 정보를 저장하는 함수
     public void evaluateExpression(Long interviewId, ExpressionDataDto expressionDataDto){
+        System.out.println("EXPRESSION 2");
         Interview interview = interviewAdaptor.findByInterviewId(interviewId);
 
         int negative = expressionDataDto.getSad()
@@ -55,8 +56,11 @@ public class ExpressionService {
         System.out.println("최종 점수: " + score);
 
         System.out.println("최종 피드백: " + feedback);
+        System.out.println("EXPRESSION 3");
 
         ExpressionEvaluationDto evaluationDto = createExpressionEvaluationDto(score, feedback); //표정 분석 결과 형식으로 반환
+
+        System.out.println("EXPRESSION 4");
 
         evaluationDomainService.evaluateExpression(interview,evaluationDto);
 

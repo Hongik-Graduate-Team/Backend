@@ -98,6 +98,7 @@ public class EvaluationDomainService {
 
     @Transactional
     public void evaluateExpression(Interview interview, ExpressionEvaluationDto expressionEvaluationDto){
+        System.out.println("EXPRESSION 5");
         Evaluation evaluation = evaluationAdaptor.findByInterview(interview);
         // expression 값을 검증하고 기본값 설정
         // expression 값을 검증하고 기본값 설정
@@ -105,8 +106,12 @@ public class EvaluationDomainService {
                 ? expressionEvaluationDto.getExpression()
                 : 0.0; // null일 경우 0.0로 설정
 
+        System.out.println("EXPRESSION 6");
+
         evaluation.assignExpression(expressionValue, expressionEvaluationDto.getExpressionMessage());
+        System.out.println("EXPRESSION 7");
         evaluationAdaptor.save(evaluation);
+        System.out.println("EXPRESSION 8");
     }
 
 }

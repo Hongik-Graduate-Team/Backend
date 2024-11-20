@@ -21,13 +21,17 @@ public class GazeEvaluationProcessor {
         GazeDirectionCriteria gazeDirectionCriteria = evaluateGazeDirection(gazeData.getDirectionCounts());
         GazeStabilityCriteria gazeStabilityCriteria = GazeStabilityCriteria.evaluate(gazeData.getStabilityScore());
 
+        System.out.println("GAZE 2");
+
         String combinedMessage = generateCombinedMessage(gazeDirectionCriteria, gazeStabilityCriteria, gazeData.getDirectionCounts());
         double totalScore = gazeDirectionCriteria.getScore() + gazeStabilityCriteria.getScore();
+        System.out.println("GAZE 4");
 
         return GazeEvaluationDto.of(totalScore, combinedMessage);
     }
 
     private String generateCombinedMessage(GazeDirectionCriteria gazeDirection, GazeStabilityCriteria gazeStability, DirectionCounts directionCounts){
+        System.out.println("GAZE 3");
         String gazeDirectionBasicMessage =   evaluationContentAdaptor.fetchMessageByCriteria(Category.GAZE, CategoryDetails.GAZE_DIRECTION, gazeDirection.name());
         String gazeDirectionMessage = fillGazeDirectionMessage(gazeDirectionBasicMessage, directionCounts);
 

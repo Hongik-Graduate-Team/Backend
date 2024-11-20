@@ -22,6 +22,7 @@ public class GazeController {
     @Operation(summary = "면접자의 시선 데이터를 받아온 후 평가합니다.")
     @PostMapping
     public SuccessResponse<Void> receiveGazeData(@RequestBody GazeDataDto gazeData, @PathVariable("interviewId") Long interviewId) {
+        System.out.println("GAZE 1");
         evaluateGazeUseCase.execute(interviewId, gazeData);
         return SuccessResponse.empty();
     }
