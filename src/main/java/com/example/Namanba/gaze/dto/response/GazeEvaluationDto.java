@@ -10,7 +10,7 @@ import lombok.Getter;
 @AllArgsConstructor
 public class GazeEvaluationDto {
     @NotNull
-    private double gaze;
+    private Double gaze;
     @NotNull
     private String gazeMessage;
 

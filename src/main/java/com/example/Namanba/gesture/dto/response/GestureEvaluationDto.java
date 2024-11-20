@@ -10,7 +10,7 @@ import lombok.Getter;
 @AllArgsConstructor
 public class GestureEvaluationDto {
     @NotNull
-    private double gesture;
+    private Double gesture;
     @NotNull
     private String gestureMessage;
 

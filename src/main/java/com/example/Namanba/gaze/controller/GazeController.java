@@ -31,6 +31,7 @@ public class GazeController {
     @Operation(summary = "시선 평가 결과를 반환합니다.")
     @GetMapping
     public SuccessResponse<GazeEvaluationDto> evaluateGazeData(@PathVariable("interviewId") Long interviewId) {
+        System.out.println("GAZE 시선 평가 결과 반환");
         GazeEvaluationDto gazeEvaluation = getGazeEvaluationUseCase.execute(interviewId);
         return SuccessResponse.of(gazeEvaluation);
     }

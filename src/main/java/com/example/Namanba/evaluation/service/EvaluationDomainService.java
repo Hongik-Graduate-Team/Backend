@@ -49,6 +49,7 @@ public class EvaluationDomainService {
     public void evaluateGaze(Interview interview, GazeEvaluationDto gazeEvaluation){
         Evaluation evaluation = evaluationAdaptor.findByInterview(interview);
         evaluation.assignGaze(gazeEvaluation.getGaze(), gazeEvaluation.getGazeMessage());
+        System.out.println("GAZE 저장");
         evaluationAdaptor.save(evaluation);
     }
 
