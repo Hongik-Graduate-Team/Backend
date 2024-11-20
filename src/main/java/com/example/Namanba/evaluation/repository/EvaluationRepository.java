@@ -17,6 +17,7 @@ public interface EvaluationRepository extends JpaRepository<Evaluation, Long> {
     Evaluation findByInterview(Interview interview);
 
     @Query("SELECT e FROM Evaluation e WHERE e.interview.interviewId = :interviewId")
+    @Lock(LockModeType.PESSIMISTIC_WRITE)
     Optional<Evaluation> findWithLockByInterviewId(@Param("interviewId") Long interviewId);
 
 

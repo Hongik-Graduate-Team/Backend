@@ -2,6 +2,7 @@ package com.example.Namanba.gaze.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Getter;
 
 import java.util.HashMap;
 import java.util.List;
@@ -11,6 +12,7 @@ import java.util.stream.Collectors;
 import static com.example.Namanba.common.constant.StaticValue.*;
 
 // 시선 위치
+@Getter
 public class DirectionCounts {
     @JsonProperty(required = true)
     private double up;

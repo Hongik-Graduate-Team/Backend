@@ -21,6 +21,7 @@ public class EvaluationAdaptor {
         return evaluationRepository.findWithLockByInterviewId(interview.getInterviewId())
                 .orElseThrow(() -> new BaseException(EvaluationErrorCode.EVALUATION_NOT_FOUND));
     }
+
     public Optional<Evaluation> findByOptionalInterview(Interview interview) {
         return evaluationRepository.findWithLockByInterviewId(interview.getInterviewId());
     }

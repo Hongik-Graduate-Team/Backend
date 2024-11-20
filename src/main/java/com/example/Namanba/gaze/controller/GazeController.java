@@ -3,6 +3,7 @@ package com.example.Namanba.gaze.controller;
 import com.example.Namanba.common.response.SuccessResponse;
 import com.example.Namanba.gaze.dto.request.GazeDataDto;
 import com.example.Namanba.gaze.dto.response.GazeEvaluationDto;
+import com.example.Namanba.gaze.entity.DirectionCounts;
 import com.example.Namanba.gaze.usecase.EvaluateGazeUseCase;
 import com.example.Namanba.gaze.usecase.GetGazeEvaluationUseCase;
 import io.swagger.v3.oas.annotations.Operation;
@@ -22,8 +23,18 @@ public class GazeController {
     @Operation(summary = "면접자의 시선 데이터를 받아온 후 평가합니다.")
     @PostMapping
     public SuccessResponse<Void> receiveGazeData(@RequestBody GazeDataDto gazeData, @PathVariable("interviewId") Long interviewId) {
-        System.out.println("시선 데이터 평가 시작 - 인터뷰 ID: " + interviewId);
-        System.out.println("요청 데이터 확인 - directionCounts: " + gazeData.getDirectionCounts() + ", stabilityScore: " + gazeData.getStabilityScore());
+        // directionCounts 상세 데이터 출력
+        DirectionCounts directionCounts = gazeData.getDirectionCounts();
+        System.out.println("DirectionCounts 데이터: ");
+        System.out.println("  - Up: " + directionCounts.getUp());
+        System.out.println("  - Down: " + directionCounts.getDown());
+        System.out.println("  - Left: " + directionCounts.getLeft());
+        System.out.println("  - Right: " + directionCounts.getRight());
+        System.out.println("  - CenterX: " + directionCounts.getCenterX());
+        System.out.println("  - CenterY: " + directionCounts.getCenterY());
+
+        // stabilityScore 출력
+        System.out.println("Stability Score: " + gazeData.getStabilityScore());
         try {
             System.out.println("시선 데이터 처리 중...");
             evaluateGazeUseCase.execute(interviewId, gazeData);
