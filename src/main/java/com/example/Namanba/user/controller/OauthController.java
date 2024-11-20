@@ -31,7 +31,7 @@ public class OauthController {
     }
 
     // kakao로부터 인가코드를 전달받는 리다이렉트 uri
-    @GetMapping("/login/oauth2/code/kakao") // Redirect URI
+    @PostMapping("/login/oauth2/code/kakao") // Redirect URI
     public ResponseEntity<Map<String, String>> kakaoLogin(@RequestParam("code") String authCode, HttpServletResponse response)
             throws IOException {
 
