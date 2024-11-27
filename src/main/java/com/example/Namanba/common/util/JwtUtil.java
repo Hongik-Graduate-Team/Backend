@@ -27,12 +27,13 @@ public class JwtUtil {
 
     //@Value("${JWT_EXPIRATION_TIME}")
     private final Long expirationTime = 1000L * 60 * 120; // 2h
+    private final Long expirationTime5 = 1000L * 60 * 5; // 테스트용 3분
 
     public String createToken(Long id) {
         return Jwts.builder()
                 .claim("id",String.valueOf(id))
                 .setIssuedAt(new Date())
-                .setExpiration(new Date(System.currentTimeMillis() + expirationTime))
+                .setExpiration(new Date(System.currentTimeMillis() + expirationTime5))
                 .signWith(SignatureAlgorithm.HS256, jwtSecretKey.getBytes())
                 .compact();
     }
