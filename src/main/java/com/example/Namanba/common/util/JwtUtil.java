@@ -8,8 +8,10 @@ import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
+import org.springframework.web.server.ResponseStatusException;
 
 import javax.crypto.SecretKey;
 import java.util.*;
@@ -95,16 +97,22 @@ public class JwtUtil {
     }
 
     public User getUserByToken(HttpServletRequest request) {
-        String token = resolveToken(request); // 요청에서 액세스 토큰 추출
+        // 요청에서 액세스 토큰 추출
+        String accessToken = resolveToken(request);
 
-        if (token == null || !validateToken(request, token)) {
-            throw new RuntimeException("유효하지 않은 액세스 토큰입니다."); // 액세스 토큰이 유효하지 않으면 예외 발생
+        // 액세스 토큰이 없거나 유효하지 않으면 validateAndGetAccessToken으로 새 토큰 발급
+        if (accessToken == null || !validateToken(request, accessToken)) {
+            accessToken = validateAndGetAccessToken(request); // 새 액세스 토큰 발급
         }
 
-        Long userId = getUserId(token); // 토큰에서 사용자 ID 추출
+        // 새롭게 발급된 또는 유효한 액세스 토큰에서 사용자 ID 추출
+        Long userId = getUserId(accessToken);
+
+        // 사용자 ID로 DB에서 사용자 정보 조회
         return userRepository.findByUserId(userId)
                 .orElseThrow(() -> new UsernameNotFoundException("회원이 존재하지 않습니다."));
     }
+
 
 
     // 리프레시 토큰 생성
@@ -118,24 +126,37 @@ public class JwtUtil {
     }
 
     // api 요청에 대해 액세스 토큰을 검증하여 유효한 액세스 토큰을 반환해주는 함수
-    public String validateAndGetAccessToken(HttpServletRequest request){
+    public String validateAndGetAccessToken(HttpServletRequest request) {
         String accessToken = resolveToken(request);
 
-        if (accessToken == null || !validateToken(request, accessToken)){
+        // 1. 액세스 토큰 검증
+        if (accessToken == null || !validateToken(request, accessToken)) {
             String refreshToken = request.getHeader("Refresh-Token");
 
-            // Refresh Token이 없거나 유효하지 않은 경우 예외 처리
-            if (refreshToken == null || !validateToken(request, refreshToken)) {
-                throw new RuntimeException("Invalid access or refresh token");
-                // 리프레시 토큰을 만드는과정
+            // 2. 리프레시 토큰이 없는 경우
+            if (refreshToken == null) {
+                throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Refresh token is missing. Please log in again.");
             }
 
-            // Refresh Token을 사용하여 새로운 Access Token 발급
+            // 3. 리프레시 토큰 검증
+            try {
+                validateToken(request, refreshToken); // 리프레시 토큰 검증
+            } catch (ExpiredJwtException e) {
+                // 리프레시 토큰이 만료된 경우
+                throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Refresh token expired. Please log in again.");
+            } catch (Exception e) {
+                // 리프레시 토큰이 유효하지 않은 경우
+                throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Invalid refresh token. Please log in again.");
+            }
+
+            // 4. 유효한 리프레시 토큰이 있으면 새 액세스 토큰 발급
             Long userId = getUserId(refreshToken);
             return createToken(userId);
         }
-        // Access Token이 유효하면 그대로 반환
+
+        // 5. 유효한 액세스 토큰 그대로 반환
         return accessToken;
     }
+
 
 }
