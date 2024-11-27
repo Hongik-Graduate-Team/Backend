@@ -37,6 +37,12 @@ public class JwtUtil {
                 .compact();
     }
 
+    public Date getExpirationTime(String token) {
+        // 클레임에서 만료 시간을 가져옴
+        Claims claims = getClaims(token);
+        return claims.getExpiration(); // 만료 시간 반환
+    }
+
     private final Long refreshExpirationTime = 1000L * 60 * 60 * 24 * 7; // 7 days
 
 
