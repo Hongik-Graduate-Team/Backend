@@ -3,6 +3,8 @@ package com.example.Namanba.user.controller;
 import com.example.Namanba.common.util.JwtUtil;
 import com.example.Namanba.user.dto.LoginResultDto;
 import com.example.Namanba.user.service.KakaoLoginService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -21,6 +23,7 @@ import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
+@Tag(name = "10. [로그인] 로그인 관련 API", description = "카카오 소셜 로그인 API입니다. ")
 public class OauthController {
 
     private final KakaoLoginService kakaoLoginService;
@@ -37,6 +40,7 @@ public class OauthController {
     }
 
     // kakao로부터 인가코드를 전달받는 리다이렉트 uri
+    @Operation(summary = "받은 인가코드로 액세스 토큰을 발급하는 API입니다.")
     @GetMapping("/login/oauth2/code/kakao") // Redirect URI
     public ResponseEntity<Map<String, Object>> kakaoLogin(@RequestParam("code") String authCode, HttpServletResponse response)
             throws IOException {
@@ -64,6 +68,7 @@ public class OauthController {
         return ResponseEntity.ok(tokens);
     }
 
+    @Operation(summary = "리프레시 토큰을 기반으로 새로운 액세스 토큰을 발급하는 API입니다.")
     @PostMapping("/refresh-token")
     public ResponseEntity<Map<String, Object>> refreshToken(@RequestBody Map<String, String> body) {
         String refreshToken = body.get("refreshToken");
@@ -83,11 +88,8 @@ public class OauthController {
     }
 
 
-
-
-
     @GetMapping("/hello")
-    public String hello(){
+    public String hello() {
         return "login success!!!!!";
     }
 }
