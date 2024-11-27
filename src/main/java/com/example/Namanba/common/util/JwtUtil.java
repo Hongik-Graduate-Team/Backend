@@ -14,6 +14,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.server.ResponseStatusException;
 
 import javax.crypto.SecretKey;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.*;
 
 @RequiredArgsConstructor
@@ -30,11 +32,17 @@ public class JwtUtil {
     private final Long expirationTime5 = 1000L * 60 * 5; // 테스트용 3분
 
     public String createToken(Long id) {
+
+        // 한국 시간으로 현재 시간 계산
+        ZonedDateTime expirationTimeKST = ZonedDateTime.now(ZoneId.of("Asia/Seoul")).plusMinutes(5);  // 테스트용으로 5분 후
+        Date expirationDate = Date.from(expirationTimeKST.toInstant());  // Date로 변환
+
+        // JWT 토큰 생성
         return Jwts.builder()
-                .claim("id",String.valueOf(id))
-                .setIssuedAt(new Date())
-                .setExpiration(new Date(System.currentTimeMillis() + expirationTime5))
-                .signWith(SignatureAlgorithm.HS256, jwtSecretKey.getBytes())
+                .claim("id", String.valueOf(id))
+                .setIssuedAt(new Date())  // 발급 시간
+                .setExpiration(expirationDate)  // 만료 시간 설정
+                .signWith(SignatureAlgorithm.HS256, jwtSecretKey.getBytes())  // 서명
                 .compact();
     }
 
