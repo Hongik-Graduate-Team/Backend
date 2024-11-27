@@ -1,5 +1,6 @@
 package com.example.Namanba.user.controller;
 
+import com.example.Namanba.common.util.JwtUtil;
 import com.example.Namanba.user.dto.LoginResultDto;
 import com.example.Namanba.user.service.KakaoLoginService;
 import jakarta.servlet.http.Cookie;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -20,6 +22,8 @@ import java.util.Map;
 public class OauthController {
 
     private final KakaoLoginService kakaoLoginService;
+
+    private final JwtUtil jwtUtil;
 
     @Value("${kakao.login-url}")
     private String kakaoLoginUri;
@@ -40,6 +44,7 @@ public class OauthController {
 
         String token = loginResult.getToken();
         String refreshToken = loginResult.getRefreshToken();
+        String expiresIn = String.valueOf(jwtUtil.getExpirationTime(token).getTime());
 
         Cookie authorization = new Cookie("Authorization", token);
         authorization.setSecure(true); // HTTPS 연결에서만 쿠키 전송
@@ -52,6 +57,7 @@ public class OauthController {
         Map<String, String> tokens = new HashMap<>();
         tokens.put("token", token);
         tokens.put("refreshToken", refreshToken);
+        tokens.put("expiresIn", expiresIn);
 
         return ResponseEntity.ok(tokens);
     }

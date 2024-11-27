@@ -41,7 +41,7 @@ public class KakaoLoginService {
         String refreshToken = createRefreshToken(user);
 
         user.setRefreshToken(refreshToken);
-         userRepository.save(user); //리프레시 토큰을 db에 저장
+        userRepository.save(user); //리프레시 토큰을 db에 저장
 
         return new LoginResultDto(token, isNewUser, refreshToken);
     }
