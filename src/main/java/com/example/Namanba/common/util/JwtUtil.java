@@ -37,14 +37,6 @@ public class JwtUtil {
 
     private final Long refreshExpirationTime = 1000L * 60 * 60 * 24 * 7; // 7 days
 
-    public String createRefreshToken(Long id) {
-        return Jwts.builder()
-                .claim("id", String.valueOf(id))
-                .setIssuedAt(new Date())
-                .setExpiration(new Date(System.currentTimeMillis() + refreshExpirationTime))
-                .signWith(SignatureAlgorithm.HS256, jwtSecretKey.getBytes())
-                .compact();
-    }
 
     public boolean validateToken(HttpServletRequest request, String token){
         try {
@@ -57,6 +49,7 @@ public class JwtUtil {
             catch (MalformedJwtException | SignatureException | UnsupportedJwtException e) {
                 request.setAttribute("exception", "토큰의 형식을 확인하세요.");
             } catch (ExpiredJwtException e) {
+                validateAndGetAccessToken(request);
                 request.setAttribute("exception", "access 토큰이 만료되었습니다.");
             } catch (IllegalArgumentException e) {
                 request.setAttribute("exception", "JWT compact of handler are invalid");
@@ -102,12 +95,26 @@ public class JwtUtil {
     }
 
     public User getUserByToken(HttpServletRequest request) {
-        //String token = resolveToken(request);
-        String token = validateAndGetAccessToken(request); //모든 api요청에 대해 액세스 토큰 검증
-        Long userId = Long.parseLong(getClaims(token).get("id", String.class));
-        User user = userRepository.findByUserId(userId)
+        String token = resolveToken(request); // 요청에서 액세스 토큰 추출
+
+        if (token == null || !validateToken(request, token)) {
+            throw new RuntimeException("유효하지 않은 액세스 토큰입니다."); // 액세스 토큰이 유효하지 않으면 예외 발생
+        }
+
+        Long userId = getUserId(token); // 토큰에서 사용자 ID 추출
+        return userRepository.findByUserId(userId)
                 .orElseThrow(() -> new UsernameNotFoundException("회원이 존재하지 않습니다."));
-        return user;
+    }
+
+
+    // 리프레시 토큰 생성
+    public String createRefreshToken(Long id) {
+        return Jwts.builder()
+                .claim("id", String.valueOf(id))
+                .setIssuedAt(new Date())
+                .setExpiration(new Date(System.currentTimeMillis() + refreshExpirationTime))
+                .signWith(SignatureAlgorithm.HS256, jwtSecretKey.getBytes())
+                .compact();
     }
 
     // api 요청에 대해 액세스 토큰을 검증하여 유효한 액세스 토큰을 반환해주는 함수
