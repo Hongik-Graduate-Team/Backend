@@ -29,20 +29,13 @@ public class JwtUtil {
 
     //@Value("${JWT_EXPIRATION_TIME}")
     private final Long expirationTime = 1000L * 60 * 120; // 2h
-    private final Long expirationTime5 = 1000L * 60 * 5; // 테스트용 3분
-
+    //private final Long expirationTime5 = 1000L * 60 * 5; // 테스트용 3분
     public String createToken(Long id) {
-
-        // 한국 시간으로 현재 시간 계산
-        ZonedDateTime expirationTimeKST = ZonedDateTime.now(ZoneId.of("Asia/Seoul")).plusMinutes(120);
-        Date expirationDate = Date.from(expirationTimeKST.toInstant());  // Date로 변환
-
-        // JWT 토큰 생성
         return Jwts.builder()
-                .claim("id", String.valueOf(id))
-                .setIssuedAt(new Date())  // 발급 시간
-                .setExpiration(expirationDate)  // 만료 시간 설정
-                .signWith(SignatureAlgorithm.HS256, jwtSecretKey.getBytes())  // 서명
+                .claim("id",String.valueOf(id))
+                .setIssuedAt(new Date())
+                .setExpiration(new Date(System.currentTimeMillis() + expirationTime))
+                .signWith(SignatureAlgorithm.HS256, jwtSecretKey.getBytes())
                 .compact();
     }
 
