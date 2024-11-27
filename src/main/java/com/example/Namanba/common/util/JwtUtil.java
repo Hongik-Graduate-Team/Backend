@@ -34,7 +34,7 @@ public class JwtUtil {
     public String createToken(Long id) {
 
         // 한국 시간으로 현재 시간 계산
-        ZonedDateTime expirationTimeKST = ZonedDateTime.now(ZoneId.of("Asia/Seoul")).plusMinutes(5);  // 테스트용으로 5분 후
+        ZonedDateTime expirationTimeKST = ZonedDateTime.now(ZoneId.of("Asia/Seoul")).plusMinutes(120);
         Date expirationDate = Date.from(expirationTimeKST.toInstant());  // Date로 변환
 
         // JWT 토큰 생성
