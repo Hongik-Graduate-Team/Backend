@@ -65,6 +65,8 @@ public class OauthController {
         tokens.put("refreshToken", refreshToken);
         tokens.put("expiresIn", expiresIn);
 
+        System.out.println("1. 만료시간: "+expiresIn);
+
         return ResponseEntity.ok(tokens);
     }
 
@@ -82,6 +84,8 @@ public class OauthController {
         Map<String, Object> response = new HashMap<>();
         response.put("token", newAccessToken);
         response.put("expiresIn", expiresIn); // expiresIn을 초 단위로 변환
+
+        System.out.println("2. 만료시간: "+expiresIn);
 
         return ResponseEntity.ok(response);
 
