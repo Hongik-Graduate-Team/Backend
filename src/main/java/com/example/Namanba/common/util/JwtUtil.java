@@ -59,8 +59,8 @@ public class JwtUtil {
             catch (MalformedJwtException | SignatureException | UnsupportedJwtException e) {
                 request.setAttribute("exception", "토큰의 형식을 확인하세요.");
             } catch (ExpiredJwtException e) {
-                validateAndGetAccessToken(request);
-                request.setAttribute("exception", "access 토큰이 만료되었습니다.");
+                throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Refresh token is missing. Please log in again.");
+                //request.setAttribute("exception", "access 토큰이 만료되었습니다.");
             } catch (IllegalArgumentException e) {
                 request.setAttribute("exception", "JWT compact of handler are invalid");
             }

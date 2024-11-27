@@ -46,11 +46,9 @@ public class OauthController {
             throws IOException {
 
         LoginResultDto loginResult = kakaoLoginService.handleKakaoLogin(authCode);
-        boolean isNewUser = loginResult.isNewUser();
 
         String token = loginResult.getToken();
         String refreshToken = loginResult.getRefreshToken();
-        Long expiresIn = jwtUtil.getExpirationTime(token).getTime();
 
         Cookie authorization = new Cookie("Authorization", token);
         authorization.setSecure(true); // HTTPS 연결에서만 쿠키 전송
@@ -63,9 +61,7 @@ public class OauthController {
         Map<String, Object> tokens = new HashMap<>();
         tokens.put("token", token);
         tokens.put("refreshToken", refreshToken);
-        tokens.put("expiresIn", expiresIn);
 
-        System.out.println("1. 만료시간: "+expiresIn);
 
         return ResponseEntity.ok(tokens);
     }
@@ -79,13 +75,9 @@ public class OauthController {
         }
         Long id = jwtUtil.getUserId(refreshToken);
         String newAccessToken = jwtUtil.createToken(id);
-        Long expiresIn = jwtUtil.getExpirationTime(newAccessToken).getTime();
 
         Map<String, Object> response = new HashMap<>();
         response.put("token", newAccessToken);
-        response.put("expiresIn", expiresIn); // expiresIn을 초 단위로 변환
-
-        System.out.println("2. 만료시간: "+expiresIn);
 
         return ResponseEntity.ok(response);
 
