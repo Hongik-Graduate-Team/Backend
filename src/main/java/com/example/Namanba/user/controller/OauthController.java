@@ -8,9 +8,11 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.io.IOException;
 import java.util.Date;
@@ -36,7 +38,7 @@ public class OauthController {
 
     // kakao로부터 인가코드를 전달받는 리다이렉트 uri
     @GetMapping("/login/oauth2/code/kakao") // Redirect URI
-    public ResponseEntity<Map<String, String>> kakaoLogin(@RequestParam("code") String authCode, HttpServletResponse response)
+    public ResponseEntity<Map<String, Object>> kakaoLogin(@RequestParam("code") String authCode, HttpServletResponse response)
             throws IOException {
 
         LoginResultDto loginResult = kakaoLoginService.handleKakaoLogin(authCode);
@@ -44,7 +46,7 @@ public class OauthController {
 
         String token = loginResult.getToken();
         String refreshToken = loginResult.getRefreshToken();
-        String expiresIn = String.valueOf(jwtUtil.getExpirationTime(token).getTime());
+        Long expiresIn = jwtUtil.getExpirationTime(token).getTime();
 
         Cookie authorization = new Cookie("Authorization", token);
         authorization.setSecure(true); // HTTPS 연결에서만 쿠키 전송
@@ -54,12 +56,30 @@ public class OauthController {
         response.addCookie(authorization);
 
         // JSON 응답에 포함할 데이터
-        Map<String, String> tokens = new HashMap<>();
+        Map<String, Object> tokens = new HashMap<>();
         tokens.put("token", token);
         tokens.put("refreshToken", refreshToken);
         tokens.put("expiresIn", expiresIn);
 
         return ResponseEntity.ok(tokens);
+    }
+
+    @PostMapping("/refresh-token")
+    public ResponseEntity<Map<String, Object>> refreshToken(@RequestBody Map<String, String> body) {
+        String refreshToken = body.get("refreshToken");
+        if (refreshToken == null) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Refresh token is missing. Please log in again.");
+        }
+        Long id = jwtUtil.getUserId(refreshToken);
+        String newAccessToken = jwtUtil.createToken(id);
+        Long expiresIn = jwtUtil.getExpirationTime(newAccessToken).getTime();
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("token", newAccessToken);
+        response.put("expiresIn", expiresIn); // expiresIn을 초 단위로 변환
+
+        return ResponseEntity.ok(response);
+
     }
 
 
