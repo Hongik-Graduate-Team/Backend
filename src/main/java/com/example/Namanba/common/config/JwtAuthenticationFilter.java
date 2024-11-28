@@ -22,6 +22,8 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
+import static com.nimbusds.oauth2.sdk.ciba.CIBAError.EXPIRED_TOKEN;
+
 @RequiredArgsConstructor
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private final JwtUtil jwtUtil;
@@ -36,6 +38,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         // Authorization 헤더가 존재하지 않거나 Bearer로 시작하지 않는 경우 처리
         if (authorizationHeader == null || !authorizationHeader.startsWith("Bearer ")) {
+            System.out.println("3번");
             response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "토큰 누락");
             return;
         }
@@ -46,20 +49,26 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         try {
             // 토큰에서 사용자 정보를 추출하여 인증 객체 생성
             UserPrincipal userPrincipal = createPrincipalFromToken(token);
+            System.out.println("4번");
 
             UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
                     userPrincipal, null, List.of(new SimpleGrantedAuthority("USER")));
 
+            System.out.println("5번");
             // 세부 정보를 설정하고 SecurityContext에 인증 정보 저장
             authenticationToken.setDetails(
                     new WebAuthenticationDetailsSource().buildDetails(request));
+            System.out.println("6번");
 
             SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+            System.out.println("7번");
 
         } catch (ExpiredJwtException e) {
+            System.out.println("ExpiredJwtException 발생: " + e.getMessage());
             response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "토큰 만료");
             return;
         } catch (Exception e) {
+            System.out.println("2번");
             response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "토큰 오류");
             return;
         }
@@ -69,10 +78,25 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     }
 
     private UserPrincipal createPrincipalFromToken(String token) {
-        User user = userRepository.findById(jwtUtil.getUserId(token))
-                .orElseThrow(() -> new RuntimeException()); // 예외 처리 추후 수정
+        try {
+            // 토큰에서 사용자 ID 추출
+            Long userId = jwtUtil.getUserId(token);
 
-        return UserPrincipal.builder(user);
+            // 사용자 정보 조회
+            User user = userRepository.findById(userId)
+                    .orElseThrow(() -> new RuntimeException("User not found"));
+
+            return UserPrincipal.builder(user);
+
+        } catch (ExpiredJwtException e) {
+            // 만료된 토큰의 경우 예외 처리
+            System.out.println("토큰 만료됨: " + e.getMessage());
+            throw new ExpiredJwtException(e.getHeader(), e.getClaims(), "토큰 만료됨");
+        } catch (Exception e) {
+            // 다른 예외 처리
+            System.out.println("예외 발생: " + e.getMessage());
+            throw new RuntimeException("Token error", e);
+        }
     }
 
     @Override

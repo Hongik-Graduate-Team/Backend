@@ -2,6 +2,7 @@ package com.example.Namanba.common.config;
 
 import com.example.Namanba.common.util.JwtUtil;
 import com.example.Namanba.user.repository.UserRepository;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -62,9 +63,20 @@ public class SecurityConfig {
                         .requestMatchers(swaggerUrlPatterns).permitAll()
                         .requestMatchers("/hello", "/css/**","/images/**", "/js/**", "/h2/**",
                                 "/api/auth/kakao-login",
-                                "/login/oauth2/code/kakao"
+                                "/login/oauth2/code/kakao",
+                                "/refresh-token"
                                 ).permitAll()
                         .anyRequest().authenticated() // 나머지 경로는 인증 필요
+                )
+                .exceptionHandling(exceptions -> exceptions
+                        .authenticationEntryPoint((request, response, authException) -> {
+                            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED); // 401 반환
+                            response.getWriter().write("{\"error\": \"Unauthorized\"}");
+                        })
+                        .accessDeniedHandler((request, response, accessDeniedException) -> {
+                            response.setStatus(HttpServletResponse.SC_FORBIDDEN); // 403 반환
+                            response.getWriter().write("{\"error\": \"Access Denied\"}");
+                        })
                 )
                 .addFilterBefore(new JwtAuthenticationFilter(jwtUtil, userRepository), UsernamePasswordAuthenticationFilter.class)
                 .build();

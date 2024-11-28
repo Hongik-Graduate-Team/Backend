@@ -3,11 +3,10 @@ package com.example.Namanba.audio.controller;
 import com.example.Namanba.audio.dto.response.AudioEvaluationDto;
 import com.example.Namanba.audio.usecase.AnalyzeAudioUseCase;
 import com.example.Namanba.audio.usecase.AudioStorageUseCase;
-import com.example.Namanba.audio.usecase.EvaluateAudioUserCase;
+import com.example.Namanba.audio.usecase.EvaluateAudioUseCase;
 import com.example.Namanba.audio.usecase.GetAudioEvaluationUseCase;
 import com.example.Namanba.audio.usecase.processor.SpeechRateProcessor;
 import com.example.Namanba.common.response.SuccessResponse;
-import com.example.Namanba.gaze.dto.response.GazeEvaluationDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -18,11 +17,7 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Schema;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 
 @RestController
 @RequiredArgsConstructor
@@ -34,7 +29,7 @@ public class AudioController {
 
     private final SpeechRateProcessor speechRateProcessor;
 
-    private final EvaluateAudioUserCase evaluateAudioUserCase;
+    private final EvaluateAudioUseCase evaluateAudioUserCase;
 
     private final GetAudioEvaluationUseCase getAudioEvaluationUseCase;
 

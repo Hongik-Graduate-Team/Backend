@@ -8,16 +8,13 @@ import com.example.Namanba.audio.usecase.processor.SpeechRateProcessor;
 import com.example.Namanba.audio.usecase.processor.VoiceVolumeProcessor;
 import com.example.Namanba.common.annotation.UseCase;
 import com.example.Namanba.evaluation.service.EvaluationDomainService;
-import com.example.Namanba.gaze.dto.request.GazeDataDto;
-import com.example.Namanba.gaze.dto.response.GazeEvaluationDto;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 
 @UseCase
 @RequiredArgsConstructor
-public class EvaluateAudioUserCase {
+public class EvaluateAudioUseCase {
     private final SilenceDurationProcessor silenceDurationProcessor;
 
     private final VoiceVolumeProcessor voiceVolumeProcessor;

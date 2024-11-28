@@ -79,6 +79,8 @@ public class OauthController {
         Map<String, Object> response = new HashMap<>();
         response.put("token", newAccessToken);
 
+        System.out.println("액세스토큰 재발급");
+
         return ResponseEntity.ok(response);
 
     }
