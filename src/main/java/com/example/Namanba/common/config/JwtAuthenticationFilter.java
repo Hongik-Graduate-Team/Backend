@@ -33,42 +33,73 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
                                     FilterChain filterChain) throws IOException, ServletException {
 
-        // HTTP 헤더에서 Authorization 헤더 값 가져오기
+        // 요청 URL로 재발급 요청인지 확인
+        String requestURI = request.getRequestURI();
+        if (requestURI.equals("/refresh-token")) {
+            // 리프레시 토큰 처리
+            String refreshToken = request.getHeader("Refresh-Token");
+            if (refreshToken == null || refreshToken.isEmpty()) {
+                System.out.println("리프레시 토큰 누락");
+                response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "리프레시 토큰 누락");
+                return;
+            }
+
+            try {
+                // 리프레시 토큰에서 사용자 정보 추출
+                UserPrincipal userPrincipal = createPrincipalFromToken(refreshToken);
+
+                // 인증 객체 생성
+                UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
+                        userPrincipal, null, List.of(new SimpleGrantedAuthority("USER")));
+
+                authenticationToken.setDetails(
+                        new WebAuthenticationDetailsSource().buildDetails(request));
+
+                // SecurityContext에 인증 정보 저장
+                SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+
+                // 요청 처리 체인 계속 실행
+                filterChain.doFilter(request, response);
+                return;
+
+            } catch (ExpiredJwtException e) {
+                System.out.println("리프레시 토큰 만료: " + e.getMessage());
+                response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "리프레시 토큰 만료");
+                return;
+            } catch (Exception e) {
+                System.out.println("리프레시 토큰 오류");
+                response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "리프레시 토큰 오류");
+                return;
+            }
+        }
+
+        // 일반 요청에 대한 처리 (Bearer 토큰)
         String authorizationHeader = request.getHeader("Authorization");
 
-        // Authorization 헤더가 존재하지 않거나 Bearer로 시작하지 않는 경우 처리
         if (authorizationHeader == null || !authorizationHeader.startsWith("Bearer ")) {
-            System.out.println("3번");
+            System.out.println("Authorization 헤더 누락");
             response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "토큰 누락");
             return;
         }
 
-        // Bearer 토큰에서 실제 토큰 값만 분리
         String token = authorizationHeader.substring(7); // "Bearer " 이후의 토큰 값 추출
 
         try {
-            // 토큰에서 사용자 정보를 추출하여 인증 객체 생성
+            // Bearer 토큰 처리
             UserPrincipal userPrincipal = createPrincipalFromToken(token);
-            System.out.println("4번");
-
             UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
                     userPrincipal, null, List.of(new SimpleGrantedAuthority("USER")));
 
-            System.out.println("5번");
-            // 세부 정보를 설정하고 SecurityContext에 인증 정보 저장
             authenticationToken.setDetails(
                     new WebAuthenticationDetailsSource().buildDetails(request));
-            System.out.println("6번");
-
             SecurityContextHolder.getContext().setAuthentication(authenticationToken);
-            System.out.println("7번");
 
         } catch (ExpiredJwtException e) {
-            System.out.println("ExpiredJwtException 발생: " + e.getMessage());
+            System.out.println("액세스 토큰 만료: " + e.getMessage());
             response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "토큰 만료");
             return;
         } catch (Exception e) {
-            System.out.println("2번");
+            System.out.println("액세스 토큰 오류");
             response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "토큰 오류");
             return;
         }
@@ -76,6 +107,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         // 요청 처리 체인 계속 실행
         filterChain.doFilter(request, response);
     }
+
 
     private UserPrincipal createPrincipalFromToken(String token) {
         try {
